@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Learn and practice hearing the difference between 3/4 and 6/8 meter."
+    />
+    <meta name="theme-color" content="#111827" />
+    <title>Practice · Time Signature Ear Trainer</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <main id="main-content" class="page-shell">
+      <section class="practice-card">
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">Time Signature Ear Trainer</p>
+            <p class="app-subtitle">Three against six</p>
+          </div>
+          <nav class="mode-switcher" aria-label="Learning stage">
+            <button type="button" data-mode="learn" aria-pressed="true">Learn</button>
+            <button type="button" data-mode="clear" aria-pressed="false">Clear</button>
+            <button type="button" data-mode="groove" aria-pressed="false">Grooves</button>
+          </nav>
+        </header>
+
+        <section id="learn-view" aria-labelledby="page-title">
+          <h1 id="page-title">Hear how six pulses can divide.</h1>
+          <p class="intro">
+            The same six eighth notes can feel like three beats of two or two beats
+            of three. Start with the labels visible and listen for where each main
+            beat begins.
+          </p>
+
+          <div class="lesson-grid">
+            <article class="lesson-card">
+              <p class="meter-label">3/4</p>
+              <h2>Three beats of two</h2>
+              <p class="count-line" aria-label="Count: one and two and three and">
+                <strong>ONE</strong> &amp; <strong>TWO</strong> &amp; <strong>THREE</strong> &amp;
+              </p>
+              <p>Notice three evenly spaced main beats before the downbeat returns.</p>
+              <button class="lesson-play" type="button" data-guide-meter="3/4">
+                Play 3/4 example
+              </button>
+            </article>
+
+            <article class="lesson-card">
+              <p class="meter-label">6/8</p>
+              <h2>Two beats of three</h2>
+              <p class="count-line" aria-label="Count: one two three four five six">
+                <strong>ONE</strong> two three <strong>FOUR</strong> five six
+              </p>
+              <p>Notice two broad main beats, each filled by three quicker pulses.</p>
+              <button class="lesson-play" type="button" data-guide-meter="6/8">
+                Play 6/8 example
+              </button>
+            </article>
+          </div>
+
+          <p id="lesson-status" class="status" role="status" aria-live="polite">
+            Choose either labeled example.
+          </p>
+          <button id="start-clear-practice" class="primary-action wide-action" type="button">
+            Start clear practice
+          </button>
+        </section>
+
+        <section id="practice-view" aria-labelledby="practice-title" hidden>
+          <div class="practice-heading">
+            <div>
+              <p id="practice-level" class="eyebrow">Clear practice</p>
+              <h1 id="practice-title">What meter do you hear?</h1>
+            </div>
+            <p id="exercise-number" class="exercise-number">Exercise 1</p>
+          </div>
+          <p id="practice-description" class="intro">
+            Bass and ornaments are removed so the beat grouping is easier to hear.
+          </p>
+
+          <div class="playback-controls">
+            <button id="play-audio" class="primary-action" type="button">Play excerpt</button>
+            <button id="stop-audio" class="secondary-action" type="button" disabled>Stop</button>
+          </div>
+          <p id="audio-status" class="status" role="status" aria-live="polite">
+            Ready to play.
+          </p>
+
+          <div class="answer-section">
+            <p class="section-label">Choose an answer</p>
+            <div class="answer-grid" role="group" aria-label="Time signature choices">
+              <button class="answer-button" type="button" data-meter="3/4" aria-pressed="false">
+                <strong>3/4</strong><span>Three beats of two</span>
+              </button>
+              <button class="answer-button" type="button" data-meter="6/8" aria-pressed="false">
+                <strong>6/8</strong><span>Two beats of three</span>
+              </button>
+            </div>
+            <button id="submit-answer" class="submit-action" type="button" disabled>
+              Check answer
+            </button>
+          </div>
+
+          <section id="feedback" class="feedback" tabindex="-1" aria-live="polite" hidden>
+            <p class="feedback-label">Answer</p>
+            <h2 id="feedback-heading">Correct</h2>
+            <p id="feedback-answer"></p>
+            <p id="feedback-count" class="feedback-count"></p>
+            <p id="feedback-cue"></p>
+            <p id="feedback-source" class="source-note"></p>
+            <details class="generation-details">
+              <summary>Generation details</summary>
+              <dl class="generation-grid">
+                <div><dt>Tempo</dt><dd id="detail-tempo"></dd></div>
+                <div><dt>Length</dt><dd id="detail-bars"></dd></div>
+                <div><dt>Pattern</dt><dd id="detail-pattern"></dd></div>
+                <div><dt>Seed</dt><dd><code id="detail-seed"></code></dd></div>
+                <div><dt>Playback</dt><dd id="detail-transform"></dd></div>
+              </dl>
+              <p class="recipe-note">
+                These parameters reconstruct the base event score. Clear practice then
+                applies the displayed playback transformation.
+              </p>
+              <pre id="generation-recipe" class="recipe-json"></pre>
+              <button id="regenerate-replay" class="secondary-action wide-action" type="button">
+                Regenerate and replay
+              </button>
+            </details>
+            <div class="feedback-actions">
+              <button id="accented-replay" class="secondary-action" type="button">
+                Replay with beat accents
+              </button>
+              <button id="next-exercise" class="primary-action" type="button">
+                Next exercise
+              </button>
+            </div>
+          </section>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
