@@ -85,12 +85,15 @@ button {
   border-radius: 0.75rem;
 }
 
-.mode-switcher button {
+.mode-switcher :is(button, a) {
+  display: grid;
+  align-items: center;
   min-height: 2.5rem;
   padding: 0.5rem 0.7rem;
   color: #94a3b8;
   font-size: 0.8125rem;
   font-weight: 700;
+  text-decoration: none;
   background: transparent;
   border: 0;
   border-radius: 0.5rem;
@@ -440,6 +443,7 @@ button:disabled {
 .lesson-play:focus-visible,
 .mode-switcher button:focus-visible,
 .lesson-control select:focus-visible,
+.mode-switcher a:focus-visible,
 .generation-details summary:focus-visible,
 .feedback:focus-visible,
 .skip-link:focus-visible {
@@ -461,7 +465,7 @@ button:disabled {
     margin-top: 1rem;
   }
 
-  .mode-switcher button {
+  .mode-switcher :is(button, a) {
     flex: 1;
   }
 

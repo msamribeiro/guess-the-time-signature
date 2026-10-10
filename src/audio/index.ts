@@ -1,9 +1,13 @@
-export { AUDIO_EXAMPLES } from './examples'
+export { AUDIO_EXAMPLES, BEGINNER_PATTERN_DEFINITIONS } from './examples'
 export { generateRhythm } from './generateRhythm'
 export {
   createGenerationRecipe,
+  normalizeGenerationRecipe,
+  PLAYBACK_TRANSFORMS,
   regenerateFromRecipe,
+  renderRecipeScore,
   serializeGenerationRecipe,
+  SUPPORTED_METERS,
 } from './generationRecipe'
 export { METER_CONFIG } from './meterConfig'
 export { createAccentedReplayScore, createClearPracticeScore } from './teachingScores'

@@ -4,7 +4,7 @@ import {
   createAccentedReplayScore,
   createClearPracticeScore,
   createGenerationRecipe,
-  regenerateFromRecipe,
+  renderRecipeScore,
   serializeGenerationRecipe,
   WebAudioRenderer,
 } from './audio'
@@ -100,10 +100,7 @@ function currentRecipe(): GenerationRecipe {
 }
 
 function scoreForRecipe(recipe: GenerationRecipe): RhythmScore {
-  const score = regenerateFromRecipe(recipe)
-  return recipe.playbackTransform === 'clear-practice'
-    ? createClearPracticeScore(score)
-    : score
+  return renderRecipeScore(recipe)
 }
 
 function setPracticePlaybackIdle(message = 'Ready to play.'): void {

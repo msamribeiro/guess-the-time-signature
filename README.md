@@ -25,6 +25,12 @@ examples, clear accented practice, and full musical grooves. See
 [`docs/audio-generation.md`](docs/audio-generation.md) for the score model, tempo
 semantics, and manual listening check.
 
+Use the **Audio Lab** link beside the practice modes to configure and audition
+procedural exercises. The Audio Lab constrains category fields to supported
+options and can load or copy a normalized JSON recipe containing everything
+needed to reproduce the generated score. It is a free-form companion to the
+focused learner flow.
+
 The visual direction references are kept in [`docs/design`](docs/design). They
 include ideas beyond the initial MVP and should not be treated as a requirement
 to implement progress tracking or advanced meters early.

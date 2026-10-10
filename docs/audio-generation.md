@@ -62,6 +62,22 @@ The seed controls small ornaments and phrase-level bass choices, but it never
 removes a main beat boundary or structural accent. Calling the generator with the
 same meter, seed, family, bar count, and tempo produces the same score.
 
+## Audio Lab
+
+The practice page links to `/audio-lab.html`, a free-form companion for exploring
+and authoring rhythms. Its form limits meter, pattern family, and playback
+transform to supported values; changing the meter also limits the available
+pattern families. Tempo and bar count use the generator's supported ranges.
+
+The JSON panel supports two directions:
+
+- Form changes produce a complete, reproducible generation recipe.
+- Pasted JSON is validated, loaded into the controlled fields, and normalized.
+
+`grouping` and `tempoBeatUnit` are derived from the meter during import rather
+than trusted from JSON. Import also rejects a pattern family belonging to a
+different meter. Generating audio still requires an explicit button press.
+
 ## Listening check
 
 Run `npm run dev`, then listen to every example without watching its label.
