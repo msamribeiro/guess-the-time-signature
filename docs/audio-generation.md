@@ -45,6 +45,12 @@ pattern family, seed, tempo and its beat unit, bar count, and playback transform
 then reapplies the Clear or Groove transform. This provides an executable check
 that the displayed parameters are sufficient for reproduction.
 
+The `2/4` versus `4/4` lesson uses longer, equal-length phrases: eight bars of
+`2/4` and four bars of `4/4`, each totaling sixteen quarter-note beats. This keeps
+duration from revealing the answer. Its teaching cues emphasize whether the
+strongest downbeat returns after two beats or after a larger four-beat cycle, and
+the feedback explicitly notes that short passages can support either notation.
+
 The renderer synthesizes four local instruments:
 
 - kick drum

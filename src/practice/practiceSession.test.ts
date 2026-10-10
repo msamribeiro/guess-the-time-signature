@@ -55,16 +55,36 @@ describe('practice session', () => {
   })
 
   it('offers a balanced library with several tempos and families per meter', () => {
+    const twoFour = BEGINNER_PATTERN_DEFINITIONS.filter(
+      (definition) => definition.meter === '2/4',
+    )
     const threeFour = BEGINNER_PATTERN_DEFINITIONS.filter(
       (definition) => definition.meter === '3/4',
+    )
+    const fourFour = BEGINNER_PATTERN_DEFINITIONS.filter(
+      (definition) => definition.meter === '4/4',
     )
     const sixEight = BEGINNER_PATTERN_DEFINITIONS.filter(
       (definition) => definition.meter === '6/8',
     )
 
+    expect(twoFour).toHaveLength(4)
     expect(threeFour).toHaveLength(4)
+    expect(fourFour).toHaveLength(4)
     expect(sixEight).toHaveLength(4)
     expect(new Set(threeFour.map((definition) => definition.tempoBpm)).size).toBeGreaterThan(1)
     expect(new Set(sixEight.map((definition) => definition.tempoBpm)).size).toBeGreaterThan(1)
+    expect(twoFour.every((definition) => definition.bars * 2 === 16)).toBe(true)
+    expect(fourFour.every((definition) => definition.bars * 4 === 16)).toBe(true)
+  })
+
+  it('selects exercises only from the active lesson meters', () => {
+    const first = createPracticeExercise('two-four', undefined, () => 0, ['2/4', '4/4'])
+    const last = createPracticeExercise('four-four', undefined, () => 0.999, ['2/4', '4/4'])
+
+    expect(['2/4', '4/4']).toContain(first.score.meter)
+    expect(['2/4', '4/4']).toContain(last.score.meter)
+    expect(['3/4', '6/8']).not.toContain(first.score.meter)
+    expect(['3/4', '6/8']).not.toContain(last.score.meter)
   })
 })

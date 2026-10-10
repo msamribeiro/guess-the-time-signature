@@ -1,8 +1,8 @@
 import { BEGINNER_PATTERN_DEFINITIONS } from '../audio/examples'
 import { generateRhythm } from '../audio/generateRhythm'
-import type { PatternFamily, RhythmScore } from '../audio/types'
+import type { PatternFamily, RhythmScore, SupportedMeter } from '../audio/types'
 
-export type PracticeMeter = '3/4' | '6/8'
+export type PracticeMeter = SupportedMeter
 export type PracticePhase = 'ready' | 'answered'
 
 export interface PracticeExercise {
@@ -24,9 +24,11 @@ export function createPracticeExercise(
   seed: string,
   previousFamily?: PatternFamily,
   random: () => number = Math.random,
+  meters: readonly PracticeMeter[] = ['3/4', '6/8'],
 ): PracticeExercise {
   const candidates = BEGINNER_PATTERN_DEFINITIONS.filter(
-    (definition) => definition.patternFamily !== previousFamily,
+    (definition) =>
+      definition.patternFamily !== previousFamily && meters.includes(definition.meter),
   )
   const index = Math.min(candidates.length - 1, Math.floor(random() * candidates.length))
   const definition = candidates[index]
@@ -43,6 +45,7 @@ export function createPracticeExercise(
       patternFamily: definition.patternFamily,
       seed,
       tempoBpm: definition.tempoBpm,
+      bars: definition.bars,
     }),
   }
 }

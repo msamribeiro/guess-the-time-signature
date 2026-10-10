@@ -46,10 +46,18 @@ describe('generateRhythm', () => {
 
   it('supports four explicit families for each comparison meter', () => {
     const families = [
+      ['2/4', 'duple-groove'],
+      ['2/4', 'two-step'],
+      ['2/4', 'quick-duple'],
+      ['2/4', 'duple-march'],
       ['3/4', 'waltz-bass'],
       ['3/4', 'flowing-three'],
       ['3/4', 'light-waltz'],
       ['3/4', 'three-beat-rock'],
+      ['4/4', 'common-time-groove'],
+      ['4/4', 'four-beat-rock'],
+      ['4/4', 'half-time-four'],
+      ['4/4', 'walking-four'],
       ['6/8', 'compound-rock'],
       ['6/8', 'rolling-six'],
       ['6/8', 'compound-folk'],
@@ -61,6 +69,14 @@ describe('generateRhythm', () => {
         patternFamily,
       )
     }
+  })
+
+  it('can give 2/4 and 4/4 exercises the same phrase length', () => {
+    const twoFour = generateRhythm({ meter: '2/4', seed: 'two', bars: 8, tempoBpm: 96 })
+    const fourFour = generateRhythm({ meter: '4/4', seed: 'four', bars: 4, tempoBpm: 96 })
+
+    expect(scoreDurationSeconds(twoFour)).toBe(10)
+    expect(scoreDurationSeconds(fourFour)).toBe(10)
   })
 
   it('gives every bar a structural downbeat and pitched bass material', () => {

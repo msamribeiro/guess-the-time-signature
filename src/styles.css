@@ -102,6 +102,31 @@ button {
   background: #3730a3;
 }
 
+.lesson-control {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lesson-control select {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.65rem 0.8rem;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 0.9375rem;
+  letter-spacing: normal;
+  text-transform: none;
+  background: #162033;
+  border: 1px solid #475569;
+  border-radius: 0.75rem;
+}
+
 .eyebrow,
 .exercise-number,
 .section-label,
@@ -172,6 +197,7 @@ h1 {
   padding: 0.75rem;
   color: #94a3b8;
   word-spacing: 0.25rem;
+  white-space: pre-wrap;
   background: #0f172a;
   border-radius: 0.65rem;
 }
@@ -326,6 +352,15 @@ button:disabled {
   font-size: 0.8125rem;
 }
 
+.feedback .ambiguity-note {
+  padding: 0.75rem;
+  color: #fed7aa;
+  font-size: 0.875rem;
+  background: rgb(124 45 18 / 28%);
+  border-left: 3px solid #fb923c;
+  border-radius: 0.35rem;
+}
+
 .feedback .feedback-count {
   padding: 0.7rem;
   color: #f8fafc;
@@ -404,6 +439,7 @@ button:disabled {
 .answer-button:focus-visible,
 .lesson-play:focus-visible,
 .mode-switcher button:focus-visible,
+.lesson-control select:focus-visible,
 .generation-details summary:focus-visible,
 .feedback:focus-visible,
 .skip-link:focus-visible {

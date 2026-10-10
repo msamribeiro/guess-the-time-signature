@@ -26,39 +26,19 @@
           </nav>
         </header>
 
+        <label class="lesson-control" for="lesson-select">
+          <span>Lesson</span>
+          <select id="lesson-select">
+            <option value="three-vs-six">3/4 versus 6/8</option>
+            <option value="two-vs-four">2/4 versus 4/4</option>
+          </select>
+        </label>
+
         <section id="learn-view" aria-labelledby="page-title">
-          <h1 id="page-title">Hear how six pulses can divide.</h1>
-          <p class="intro">
-            The same six eighth notes can feel like three beats of two or two beats
-            of three. Start with the labels visible and listen for where each main
-            beat begins.
-          </p>
+          <h1 id="page-title"></h1>
+          <p id="lesson-introduction" class="intro"></p>
 
-          <div class="lesson-grid">
-            <article class="lesson-card">
-              <p class="meter-label">3/4</p>
-              <h2>Three beats of two</h2>
-              <p class="count-line" aria-label="Count: one and two and three and">
-                <strong>ONE</strong> &amp; <strong>TWO</strong> &amp; <strong>THREE</strong> &amp;
-              </p>
-              <p>Notice three evenly spaced main beats before the downbeat returns.</p>
-              <button class="lesson-play" type="button" data-guide-meter="3/4">
-                Play 3/4 example
-              </button>
-            </article>
-
-            <article class="lesson-card">
-              <p class="meter-label">6/8</p>
-              <h2>Two beats of three</h2>
-              <p class="count-line" aria-label="Count: one two three four five six">
-                <strong>ONE</strong> two three <strong>FOUR</strong> five six
-              </p>
-              <p>Notice two broad main beats, each filled by three quicker pulses.</p>
-              <button class="lesson-play" type="button" data-guide-meter="6/8">
-                Play 6/8 example
-              </button>
-            </article>
-          </div>
+          <div id="lesson-grid" class="lesson-grid"></div>
 
           <p id="lesson-status" class="status" role="status" aria-live="polite">
             Choose either labeled example.
@@ -91,11 +71,11 @@
           <div class="answer-section">
             <p class="section-label">Choose an answer</p>
             <div class="answer-grid" role="group" aria-label="Time signature choices">
-              <button class="answer-button" type="button" data-meter="3/4" aria-pressed="false">
-                <strong>3/4</strong><span>Three beats of two</span>
+              <button class="answer-button" type="button" data-answer-index="0" aria-pressed="false">
+                <strong></strong><span></span>
               </button>
-              <button class="answer-button" type="button" data-meter="6/8" aria-pressed="false">
-                <strong>6/8</strong><span>Two beats of three</span>
+              <button class="answer-button" type="button" data-answer-index="1" aria-pressed="false">
+                <strong></strong><span></span>
               </button>
             </div>
             <button id="submit-answer" class="submit-action" type="button" disabled>
@@ -109,6 +89,7 @@
             <p id="feedback-answer"></p>
             <p id="feedback-count" class="feedback-count"></p>
             <p id="feedback-cue"></p>
+            <p id="feedback-ambiguity" class="ambiguity-note" hidden></p>
             <p id="feedback-source" class="source-note"></p>
             <details class="generation-details">
               <summary>Generation details</summary>

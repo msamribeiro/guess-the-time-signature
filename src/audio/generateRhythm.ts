@@ -16,9 +16,9 @@ const MIN_TEMPO_BPM = 40
 const MAX_TEMPO_BPM = 220
 
 const FAMILIES_BY_METER: Record<SupportedMeter, readonly PatternFamily[]> = {
-  '2/4': ['duple-groove'],
+  '2/4': ['duple-groove', 'two-step', 'quick-duple', 'duple-march'],
   '3/4': ['waltz-bass', 'flowing-three', 'light-waltz', 'three-beat-rock'],
-  '4/4': ['common-time-groove'],
+  '4/4': ['common-time-groove', 'four-beat-rock', 'half-time-four', 'walking-four'],
   '6/8': ['compound-rock', 'rolling-six', 'compound-folk', 'six-eight-drive'],
 }
 
@@ -62,6 +62,33 @@ function composeBar(family: PatternFamily, context: PatternContext): void {
       context.add(0, 'kick', 0.95, 'downbeat')
       context.add(2, 'snare', 0.72, 'beat')
       context.add(0, 'bass', 0.8, 'downbeat', 1.8, root)
+      break
+
+    case 'two-step':
+      addHatGrid(context, [0.74, 0.24, 0.5, 0.22])
+      context.add(0, 'kick', 0.96, 'downbeat')
+      context.add(2, 'snare', 0.68, 'beat')
+      context.add(0, 'bass', 0.8, 'downbeat', 1.6, root)
+      context.add(2, 'bass', 0.48, 'beat', 1.4, 43)
+      if (context.random() > 0.62) context.add(3, 'kick', 0.18, 'ornament')
+      break
+
+    case 'quick-duple':
+      addHatGrid(context, [0.78, 0.3, 0.54, 0.28])
+      context.add(0, 'kick', 0.98, 'downbeat')
+      context.add(2, 'snare', 0.7, 'beat')
+      context.add(0, 'bass', 0.84, 'downbeat', 1.4, root)
+      context.add(2, 'bass', 0.5, 'beat', 1.2, context.bar % 2 === 0 ? 40 : 43)
+      if (context.random() > 0.55) context.add(1, 'snare', 0.16, 'ornament')
+      break
+
+    case 'duple-march':
+      addHatGrid(context, [0.76, 0.25, 0.5, 0.24])
+      context.add(0, 'kick', 1, 'downbeat')
+      context.add(2, 'snare', 0.74, 'beat')
+      context.add(0, 'bass', 0.82, 'downbeat', 1.7, root)
+      context.add(2, 'bass', 0.45, 'beat', 1.5, context.bar % 2 === 0 ? 43 : 41)
+      if (context.random() > 0.6) context.add(3, 'snare', 0.18, 'ornament')
       break
 
     case 'waltz-bass':
@@ -116,6 +143,38 @@ function composeBar(family: PatternFamily, context: PatternContext): void {
       context.add(6, 'snare', 0.72, 'beat')
       context.add(0, 'bass', 0.8, 'downbeat', 3.5, root)
       context.add(4, 'bass', 0.6, 'beat', 3.5, 43)
+      break
+
+    case 'four-beat-rock':
+      addHatGrid(context, [0.78, 0.28, 0.48, 0.26, 0.6, 0.28, 0.46, 0.25])
+      context.add(0, 'kick', 1, 'downbeat')
+      context.add(2, 'snare', 0.72, 'beat')
+      context.add(4, 'kick', 0.62, 'beat')
+      context.add(6, 'snare', 0.7, 'beat')
+      context.add(0, 'bass', 0.84, 'downbeat', 1.7, root)
+      context.add(4, 'bass', 0.58, 'beat', 1.7, 43)
+      if (context.random() > 0.58) context.add(7, 'kick', 0.2, 'ornament')
+      break
+
+    case 'half-time-four':
+      addHatGrid(context, [0.74, 0.24, 0.46, 0.22, 0.58, 0.24, 0.45, 0.22])
+      context.add(0, 'kick', 0.98, 'downbeat')
+      context.add(4, 'snare', 0.68, 'beat')
+      context.add(0, 'bass', 0.82, 'downbeat', 3.4, root)
+      context.add(4, 'bass', 0.55, 'beat', 3.2, context.bar % 2 === 0 ? 40 : 43)
+      if (context.random() > 0.52) context.add(6, 'kick', 0.22, 'ornament')
+      break
+
+    case 'walking-four':
+      addHatGrid(context, [0.76, 0.26, 0.48, 0.24, 0.6, 0.26, 0.46, 0.24])
+      context.add(0, 'kick', 0.96, 'downbeat')
+      context.add(2, 'snare', 0.58, 'beat')
+      context.add(4, 'kick', 0.6, 'beat')
+      context.add(6, 'snare', 0.58, 'beat')
+      context.add(0, 'bass', 0.8, 'downbeat', 1.5, root)
+      context.add(2, 'bass', 0.46, 'beat', 1.4, 40)
+      context.add(4, 'bass', 0.56, 'beat', 1.5, 43)
+      context.add(6, 'bass', 0.44, 'beat', 1.4, 45)
       break
 
     case 'compound-rock':
