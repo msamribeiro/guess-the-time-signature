@@ -17,6 +17,9 @@ import {
   type PracticeRun,
 } from './practice/practiceRun'
 import type { PracticeMeter } from './practice/practiceSession'
+import { initializeThemeToggle } from './theme'
+
+initializeThemeToggle()
 
 function requireElement<ElementType extends Element>(
   selector: string,

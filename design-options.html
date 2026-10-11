@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="en" data-theme="latte">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Four visual design directions for the Time Signature Ear Trainer."
+    />
+    <meta name="theme-color" content="#eff1f5" />
+    <title>Design options · Time Signature Ear Trainer</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --rosewater: #dc8a78;
+        --pink: #ea76cb;
+        --mauve: #8839ef;
+        --red: #d20f39;
+        --peach: #fe640b;
+        --yellow: #df8e1d;
+        --green: #40a02b;
+        --teal: #179299;
+        --sky: #04a5e5;
+        --blue: #1e66f5;
+        --lavender: #7287fd;
+        --text: #4c4f69;
+        --subtext: #5c5f77;
+        --overlay: #7c7f93;
+        --surface-2: #acb0be;
+        --surface-1: #bcc0cc;
+        --surface-0: #ccd0da;
+        --base: #eff1f5;
+        --mantle: #e6e9ef;
+        --crust: #dce0e8;
+        --on-mauve: #eff1f5;
+        --shadow: rgb(76 79 105 / 16%);
+      }
+
+      :root[data-theme='mocha'] {
+        color-scheme: dark;
+        --rosewater: #f5e0dc;
+        --pink: #f5c2e7;
+        --mauve: #cba6f7;
+        --red: #f38ba8;
+        --peach: #fab387;
+        --yellow: #f9e2af;
+        --green: #a6e3a1;
+        --teal: #94e2d5;
+        --sky: #89dceb;
+        --blue: #89b4fa;
+        --lavender: #b4befe;
+        --text: #cdd6f4;
+        --subtext: #bac2de;
+        --overlay: #9399b2;
+        --surface-2: #585b70;
+        --surface-1: #45475a;
+        --surface-0: #313244;
+        --base: #1e1e2e;
+        --mantle: #181825;
+        --crust: #11111b;
+        --on-mauve: #11111b;
+        --shadow: rgb(17 17 27 / 42%);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--crust);
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--crust);
+      }
+
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+
+      button,
+      label,
+      select {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .skip-link {
+        position: fixed;
+        z-index: 10;
+        top: 0.75rem;
+        left: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--base);
+        font-weight: 800;
+        background: var(--text);
+        transform: translateY(-200%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .comparison-header {
+        display: flex;
+        width: min(100% - 2rem, 86rem);
+        gap: 2rem;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin: 0 auto;
+        padding: clamp(2rem, 6vw, 5rem) 0 clamp(1.75rem, 4vw, 3rem);
+        border-bottom: 1px solid var(--surface-2);
+      }
+
+      .comparison-header h1 {
+        max-width: 13ch;
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(2.4rem, 7vw, 5.8rem);
+        line-height: 0.94;
+        letter-spacing: -0.06em;
+      }
+
+      .comparison-header p {
+        max-width: 55ch;
+        margin: 1rem 0 0;
+        color: var(--subtext);
+        line-height: 1.6;
+      }
+
+      .theme-switch {
+        display: flex;
+        flex: none;
+        gap: 0.25rem;
+        align-items: center;
+      }
+
+      .theme-toggle {
+        display: grid;
+        width: 2.75rem;
+        height: 2.75rem;
+        flex: none;
+        place-items: center;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+
+      .theme-switch-track {
+        display: flex;
+        width: 2.3rem;
+        height: 1.3rem;
+        align-items: center;
+        padding: 0.15rem;
+        background: var(--surface-1);
+        border: 1px solid var(--surface-2);
+        border-radius: 999px;
+      }
+
+      .theme-switch-thumb {
+        width: 0.88rem;
+        height: 0.88rem;
+        background: var(--mauve);
+        border-radius: 50%;
+        transform: translateX(0);
+      }
+
+      .theme-toggle:hover .theme-switch-track {
+        border-color: var(--mauve);
+      }
+
+      .theme-icon {
+        width: 1rem;
+        height: 1rem;
+        color: var(--overlay);
+        fill: none;
+        opacity: 0.55;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
+      }
+
+      :root[data-theme='latte'] .theme-icon-sun {
+        color: var(--yellow);
+        opacity: 1;
+      }
+
+      :root[data-theme='mocha'] .theme-icon-moon {
+        color: var(--mauve);
+        opacity: 1;
+      }
+
+      :root[data-theme='mocha'] .theme-switch-thumb {
+        transform: translateX(1rem);
+      }
+
+      .comparison-main {
+        width: min(100% - 2rem, 86rem);
+        margin: 0 auto;
+        padding: clamp(2rem, 5vw, 4rem) 0 6rem;
+      }
+
+      .concept {
+        margin-bottom: clamp(4rem, 10vw, 8rem);
+      }
+
+      .concept-label {
+        display: flex;
+        gap: 1rem;
+        align-items: baseline;
+        margin-bottom: 1rem;
+      }
+
+      .concept-label span {
+        color: var(--mauve);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .concept-label h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .mockup {
+        min-height: 42rem;
+        overflow: hidden;
+        color: var(--text);
+        background: var(--base);
+        border: 1px solid var(--surface-2);
+        box-shadow: 0 1.25rem 3rem var(--shadow);
+      }
+
+      .brand {
+        margin: 0;
+        color: var(--mauve);
+        font-size: 0.72rem;
+        font-weight: 850;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      .subtitle,
+      .intro,
+      .helper,
+      .mode-copy {
+        color: var(--subtext);
+      }
+
+      .subtitle {
+        margin: 0.35rem 0 0;
+        font-size: 0.82rem;
+      }
+
+      .mockup h3 {
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(2rem, 5vw, 4.5rem);
+        line-height: 0.98;
+        letter-spacing: -0.055em;
+      }
+
+      .intro {
+        max-width: 52ch;
+        margin: 1rem 0 0;
+        line-height: 1.6;
+      }
+
+      .preview-link {
+        color: var(--blue);
+        font-size: 0.78rem;
+        font-weight: 750;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.25em;
+      }
+
+      .control-label,
+      .mockup legend {
+        color: var(--subtext);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.075em;
+        text-transform: uppercase;
+      }
+
+      .mockup fieldset {
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      .mockup legend {
+        margin-bottom: 0.7rem;
+      }
+
+      .meter-row,
+      .mode-row {
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .meter-row {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .meter-choice,
+      .mode-choice {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .meter-choice input,
+      .mode-choice input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+      }
+
+      .meter-choice span,
+      .mode-choice > span {
+        display: flex;
+        min-height: 3rem;
+        align-items: center;
+        border: 1px solid var(--surface-2);
+      }
+
+      .meter-choice span {
+        justify-content: center;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-weight: 850;
+      }
+
+      .meter-choice input:checked + span {
+        color: var(--on-mauve);
+        background: var(--mauve);
+        border-color: var(--mauve);
+      }
+
+      .mode-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .mode-choice > span {
+        display: grid;
+        min-height: 5.75rem;
+        align-content: center;
+        padding: 0.8rem;
+        background: var(--mantle);
+      }
+
+      .mode-choice strong,
+      .mode-choice small {
+        display: block;
+      }
+
+      .mode-choice small {
+        margin-top: 0.3rem;
+        color: var(--subtext);
+        line-height: 1.35;
+      }
+
+      .mode-choice input:checked + span {
+        border-color: var(--mauve);
+        box-shadow: inset 0 3px 0 var(--mauve);
+      }
+
+      .select-wrap {
+        display: grid;
+        gap: 0.45rem;
+      }
+
+      .select-wrap select {
+        width: 100%;
+        min-height: 3rem;
+        padding: 0.65rem 0.8rem;
+        color: var(--text);
+        background: var(--mantle);
+        border: 1px solid var(--surface-2);
+        border-radius: 0.4rem;
+      }
+
+      .primary {
+        min-height: 3.25rem;
+        padding: 0.7rem 1.1rem;
+        color: var(--on-mauve);
+        font-weight: 850;
+        background: var(--mauve);
+        border: 1px solid var(--mauve);
+        border-radius: 0.45rem;
+        cursor: pointer;
+      }
+
+      .helper {
+        margin: 0;
+        font-size: 0.78rem;
+        line-height: 1.5;
+      }
+
+      /* 01 — structured grid */
+      .option-grid {
+        display: grid;
+        grid-template-columns: 15rem minmax(0, 1fr);
+      }
+
+      .option-grid .rail {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+        background: var(--mantle);
+        border-right: 1px solid var(--surface-1);
+      }
+
+      .option-grid .rail-mark {
+        color: var(--surface-2);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 4.5rem;
+        font-weight: 900;
+        line-height: 0.9;
+      }
+
+      .option-grid .main-pane {
+        padding: clamp(1.5rem, 5vw, 4rem);
+      }
+
+      .option-grid .pane-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 3.5rem;
+      }
+
+      .option-grid .setup-stack {
+        display: grid;
+        gap: 1.6rem;
+        margin-top: 2.5rem;
+      }
+
+      .option-grid .start-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: end;
+      }
+
+      /* 02 — type-led */
+      .option-type {
+        padding: clamp(1.25rem, 5vw, 4.5rem);
+      }
+
+      .option-type .topline {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--surface-1);
+      }
+
+      .option-type .hero {
+        max-width: 58rem;
+        margin: clamp(4rem, 10vw, 8rem) auto 3rem;
+        text-align: center;
+      }
+
+      .option-type h3 {
+        font-size: clamp(3rem, 8vw, 7rem);
+      }
+
+      .option-type .intro {
+        margin-inline: auto;
+      }
+
+      .option-type .linear-form {
+        display: grid;
+        max-width: 58rem;
+        gap: 1.5rem;
+        margin-inline: auto;
+      }
+
+      .option-type .meter-choice span {
+        min-height: 4rem;
+        font-size: 1.35rem;
+        background: transparent;
+        border-width: 0 0 2px;
+      }
+
+      .option-type .mode-choice > span {
+        text-align: left;
+        background: transparent;
+        border-width: 0 0 1px;
+      }
+
+      .option-type .mode-choice input:checked + span {
+        color: var(--mauve);
+        border-bottom-color: var(--mauve);
+        box-shadow: none;
+      }
+
+      .option-type .finish-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        align-items: end;
+      }
+
+      /* 03 — stepped practice sheet */
+      .option-steps {
+        padding: clamp(1.25rem, 4vw, 3rem);
+      }
+
+      .option-steps .sheet-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-bottom: 3rem;
+      }
+
+      .option-steps .sheet-title {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 1.25rem;
+        align-items: start;
+      }
+
+      .option-steps .tempo-mark {
+        color: var(--teal);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 4rem;
+        line-height: 0.85;
+      }
+
+      .step-list {
+        border-top: 1px solid var(--surface-2);
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 4rem minmax(0, 1fr);
+        border-bottom: 1px solid var(--surface-2);
+      }
+
+      .step-number {
+        padding: 1.35rem 1rem 1rem 0;
+        color: var(--teal);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+
+      .option-steps .step-body {
+        padding: 1.15rem 0 1.3rem 1.25rem;
+        border-left: 1px solid var(--surface-2);
+      }
+
+      .option-steps .meter-row,
+      .option-steps .mode-row {
+        max-width: 48rem;
+      }
+
+      .option-steps .meter-choice input:checked + span,
+      .option-steps .primary {
+        color: var(--on-mauve);
+        background: var(--mauve);
+        border-color: var(--mauve);
+      }
+
+      .option-steps .mode-choice input:checked + span {
+        border-color: var(--teal);
+        box-shadow: inset 4px 0 0 var(--teal);
+      }
+
+      .option-steps .sheet-footer {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: center;
+        padding-top: 1.5rem;
+      }
+
+      /* 04 — compact console */
+      .option-console {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        padding: 1rem;
+        background: var(--mantle);
+      }
+
+      .console-bar {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.8rem 1rem 1.25rem;
+      }
+
+      .console-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(19rem, 0.95fr);
+        min-height: 36rem;
+        background: var(--base);
+        border: 1px solid var(--surface-1);
+      }
+
+      .console-intro {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: clamp(1.5rem, 5vw, 4rem);
+        border-right: 1px solid var(--surface-1);
+      }
+
+      .console-intro h3 {
+        max-width: 8ch;
+      }
+
+      .pulse-display {
+        display: flex;
+        gap: 0.45rem;
+        align-items: flex-end;
+        margin-top: 3rem;
+      }
+
+      .pulse-display i {
+        display: block;
+        width: 0.65rem;
+        height: 2.2rem;
+        background: var(--surface-1);
+      }
+
+      .pulse-display i:nth-child(3n + 1) {
+        height: 4.25rem;
+        background: var(--mauve);
+      }
+
+      .console-form {
+        display: grid;
+        align-content: start;
+        gap: 1.5rem;
+        padding: clamp(1.5rem, 4vw, 3rem);
+        background: var(--surface-0);
+      }
+
+      .option-console .meter-row {
+        gap: 0.35rem;
+      }
+
+      .option-console .meter-choice span {
+        min-height: 2.75rem;
+        background: var(--base);
+      }
+
+      .option-console .meter-choice input:checked + span {
+        color: var(--text);
+        background: var(--base);
+        border-color: var(--mauve);
+        box-shadow: inset 0 -3px 0 var(--mauve);
+      }
+
+      .option-console .mode-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+
+      .option-console .mode-choice > span {
+        min-height: auto;
+        padding: 0.75rem;
+        background: var(--base);
+      }
+
+      .option-console .mode-choice input:checked + span {
+        border-color: var(--mauve);
+        box-shadow: inset 4px 0 0 var(--mauve);
+      }
+
+      .option-console .primary {
+        color: var(--on-mauve);
+        background: var(--mauve);
+        border-color: var(--mauve);
+      }
+
+      .palette-note {
+        margin: 0;
+        color: var(--overlay);
+        font-size: 0.75rem;
+        text-align: center;
+      }
+
+      .palette-note a {
+        color: var(--blue);
+      }
+
+      button:focus-visible,
+      select:focus-visible,
+      a:focus-visible,
+      .meter-choice:has(input:focus-visible),
+      .mode-choice:has(input:focus-visible) {
+        outline: 3px solid var(--red);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 54rem) {
+        .comparison-header {
+          display: grid;
+          align-items: start;
+        }
+
+        .option-grid,
+        .console-body {
+          grid-template-columns: 1fr;
+        }
+
+        .option-grid .rail {
+          display: block;
+          padding: 1.25rem;
+          border-right: 0;
+          border-bottom: 1px solid var(--surface-1);
+        }
+
+        .option-grid .rail-mark {
+          display: none;
+        }
+
+        .console-intro {
+          border-right: 0;
+          border-bottom: 1px solid var(--surface-1);
+        }
+      }
+
+      @media (max-width: 38rem) {
+        .comparison-header,
+        .comparison-main {
+          width: min(100% - 1.25rem, 86rem);
+        }
+
+        .mockup {
+          min-height: auto;
+        }
+
+        .meter-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .mode-row,
+        .option-type .finish-row,
+        .option-grid .start-row,
+        .option-steps .sheet-footer {
+          grid-template-columns: 1fr;
+        }
+
+        .option-type .hero {
+          margin-top: 3rem;
+          text-align: left;
+        }
+
+        .option-type .intro {
+          margin-inline: 0;
+        }
+
+        .option-steps .sheet-header {
+          display: grid;
+        }
+
+        .step {
+          grid-template-columns: 2.75rem minmax(0, 1fr);
+        }
+
+        .option-steps .step-body {
+          padding-left: 0.9rem;
+        }
+
+        .console-body {
+          min-height: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .theme-toggle,
+        .meter-choice span,
+        .mode-choice > span,
+        .primary {
+          transition:
+            color 120ms ease,
+            background-color 120ms ease,
+            border-color 120ms ease;
+        }
+
+        .theme-switch-thumb {
+          transition: transform 120ms ease;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#designs">Skip to design options</a>
+    <header class="comparison-header">
+      <div>
+        <h1>Four visual directions</h1>
+        <p>
+          The same practice setup, interpreted four ways. Compare composition and
+          hierarchy in both Catppuccin Latte and Mocha.
+        </p>
+      </div>
+      <div class="theme-switch" role="group" aria-label="Preview theme">
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+        <button class="theme-toggle" type="button" role="switch" data-theme-toggle aria-checked="false" aria-label="Switch to dark theme" title="Switch to dark theme"><span class="theme-switch-track" aria-hidden="true"><span class="theme-switch-thumb"></span></span></button>
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+      </div>
+    </header>
+
+    <main id="designs" class="comparison-main">
+      <section class="concept" aria-labelledby="concept-grid">
+        <div class="concept-label">
+          <span>Option 01</span>
+          <h2 id="concept-grid">Structured grid</h2>
+        </div>
+        <article class="mockup option-grid">
+          <aside class="rail">
+            <div>
+              <p class="brand">Time Signature Ear Trainer</p>
+              <p class="subtitle">Build a focused listening session</p>
+            </div>
+            <div class="rail-mark" aria-hidden="true">3<br />—<br />4</div>
+          </aside>
+          <div class="main-pane">
+            <div class="pane-header"><a class="preview-link" href="./audio-lab.html">Audio Lab</a></div>
+            <h3>What would you like to practice?</h3>
+            <p class="intro">Choose the meters, listening mode, and length of this session.</p>
+            <div class="setup-stack">
+              <fieldset>
+                <legend>Time signatures</legend>
+                <div class="meter-row">
+                  <label class="meter-choice"><input type="checkbox" /><span>2/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" checked /><span>3/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" /><span>4/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" checked /><span>6/8</span></label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Mode</legend>
+                <div class="mode-row">
+                  <label class="mode-choice"><input name="mode-1" type="radio" /><span><strong>Learn</strong><small>Meter and counting guide stay visible.</small></span></label>
+                  <label class="mode-choice"><input name="mode-1" type="radio" checked /><span><strong>Clear</strong><small>Blind practice with strong grouping cues.</small></span></label>
+                  <label class="mode-choice"><input name="mode-1" type="radio" /><span><strong>Grooves</strong><small>Blind practice with the full arrangement.</small></span></label>
+                </div>
+              </fieldset>
+              <div class="start-row">
+                <label class="select-wrap"><span class="control-label">Session length</span><select><option>10 exercises</option></select></label>
+                <button class="primary" type="button">Start session</button>
+              </div>
+              <p class="helper">This session stays only in this browser tab. Nothing is saved or tracked.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="concept" aria-labelledby="concept-type">
+        <div class="concept-label">
+          <span>Option 02</span>
+          <h2 id="concept-type">Type-led minimal</h2>
+        </div>
+        <article class="mockup option-type">
+          <div class="topline">
+            <div><p class="brand">Time Signature Ear Trainer</p><p class="subtitle">Build a focused listening session</p></div>
+            <a class="preview-link" href="./audio-lab.html">Audio Lab</a>
+          </div>
+          <div class="hero">
+            <h3>What would you like to practice?</h3>
+            <p class="intro">Choose the meters, listening mode, and length of this session.</p>
+          </div>
+          <div class="linear-form">
+            <fieldset>
+              <legend>Time signatures</legend>
+              <div class="meter-row">
+                <label class="meter-choice"><input type="checkbox" /><span>2/4</span></label>
+                <label class="meter-choice"><input type="checkbox" checked /><span>3/4</span></label>
+                <label class="meter-choice"><input type="checkbox" /><span>4/4</span></label>
+                <label class="meter-choice"><input type="checkbox" checked /><span>6/8</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Mode</legend>
+              <div class="mode-row">
+                <label class="mode-choice"><input name="mode-2" type="radio" /><span><strong>Learn</strong><small>Meter and counting guide stay visible.</small></span></label>
+                <label class="mode-choice"><input name="mode-2" type="radio" checked /><span><strong>Clear</strong><small>Blind practice with strong grouping cues.</small></span></label>
+                <label class="mode-choice"><input name="mode-2" type="radio" /><span><strong>Grooves</strong><small>Blind practice with the full arrangement.</small></span></label>
+              </div>
+            </fieldset>
+            <div class="finish-row">
+              <label class="select-wrap"><span class="control-label">Session length</span><select><option>10 exercises</option></select></label>
+              <button class="primary" type="button">Start session</button>
+            </div>
+            <p class="helper">This session stays only in this browser tab. Nothing is saved or tracked.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="concept" aria-labelledby="concept-steps">
+        <div class="concept-label">
+          <span>Option 03</span>
+          <h2 id="concept-steps">Stepped practice sheet</h2>
+        </div>
+        <article class="mockup option-steps">
+          <div class="sheet-header">
+            <div class="sheet-title"><span class="tempo-mark" aria-hidden="true">♩</span><div><p class="brand">Time Signature Ear Trainer</p><p class="subtitle">Build a focused listening session</p></div></div>
+            <a class="preview-link" href="./audio-lab.html">Audio Lab</a>
+          </div>
+          <h3>What would you like to practice?</h3>
+          <p class="intro">Choose the meters, listening mode, and length of this session.</p>
+          <div class="step-list">
+            <div class="step">
+              <div class="step-number">01</div>
+              <fieldset class="step-body">
+                <legend>Time signatures</legend>
+                <div class="meter-row">
+                  <label class="meter-choice"><input type="checkbox" /><span>2/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" checked /><span>3/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" /><span>4/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" checked /><span>6/8</span></label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="step">
+              <div class="step-number">02</div>
+              <fieldset class="step-body">
+                <legend>Mode</legend>
+                <div class="mode-row">
+                  <label class="mode-choice"><input name="mode-3" type="radio" /><span><strong>Learn</strong><small>Meter and counting guide stay visible.</small></span></label>
+                  <label class="mode-choice"><input name="mode-3" type="radio" checked /><span><strong>Clear</strong><small>Blind practice with strong grouping cues.</small></span></label>
+                  <label class="mode-choice"><input name="mode-3" type="radio" /><span><strong>Grooves</strong><small>Blind practice with the full arrangement.</small></span></label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="step">
+              <div class="step-number">03</div>
+              <div class="step-body"><label class="select-wrap"><span class="control-label">Session length</span><select><option>10 exercises</option></select></label></div>
+            </div>
+          </div>
+          <div class="sheet-footer">
+            <p class="helper">This session stays only in this browser tab. Nothing is saved or tracked.</p>
+            <button class="primary" type="button">Start session</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="concept" aria-labelledby="concept-console">
+        <div class="concept-label">
+          <span>Option 04</span>
+          <h2 id="concept-console">Compact studio console</h2>
+        </div>
+        <article class="mockup option-console">
+          <div class="console-bar">
+            <div><p class="brand">Time Signature Ear Trainer</p><p class="subtitle">Build a focused listening session</p></div>
+            <a class="preview-link" href="./audio-lab.html">Audio Lab</a>
+          </div>
+          <div class="console-body">
+            <div class="console-intro">
+              <div><h3>What would you like to practice?</h3><p class="intro">Choose the meters, listening mode, and length of this session.</p></div>
+              <div class="pulse-display" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="console-form">
+              <fieldset>
+                <legend>Time signatures</legend>
+                <div class="meter-row">
+                  <label class="meter-choice"><input type="checkbox" /><span>2/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" checked /><span>3/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" /><span>4/4</span></label>
+                  <label class="meter-choice"><input type="checkbox" checked /><span>6/8</span></label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Mode</legend>
+                <div class="mode-row">
+                  <label class="mode-choice"><input name="mode-4" type="radio" /><span><strong>Learn</strong><small>Meter and counting guide stay visible.</small></span></label>
+                  <label class="mode-choice"><input name="mode-4" type="radio" checked /><span><strong>Clear</strong><small>Blind practice with strong grouping cues.</small></span></label>
+                  <label class="mode-choice"><input name="mode-4" type="radio" /><span><strong>Grooves</strong><small>Blind practice with the full arrangement.</small></span></label>
+                </div>
+              </fieldset>
+              <label class="select-wrap"><span class="control-label">Session length</span><select><option>10 exercises</option></select></label>
+              <button class="primary" type="button">Start session</button>
+              <p class="helper">This session stays only in this browser tab. Nothing is saved or tracked.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <p class="palette-note">
+        Colors use the official <a href="https://catppuccin.com/palette/">Catppuccin Latte and Mocha palettes</a>.
+      </p>
+    </main>
+
+    <script>
+      const root = document.documentElement
+      const themeMeta = document.querySelector('meta[name="theme-color"]')
+      const themeButton = document.querySelector('[data-theme-toggle]')
+      const colorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+      let manuallySelected = false
+
+      function setTheme(theme) {
+        root.dataset.theme = theme
+        themeMeta.setAttribute('content', theme === 'mocha' ? '#11111b' : '#eff1f5')
+        const label = theme === 'mocha' ? 'Switch to light theme' : 'Switch to dark theme'
+        themeButton.setAttribute('aria-label', label)
+        themeButton.setAttribute('aria-checked', String(theme === 'mocha'))
+        themeButton.setAttribute('title', label)
+      }
+
+      themeButton.addEventListener('click', () => {
+        manuallySelected = true
+        setTheme(root.dataset.theme === 'mocha' ? 'latte' : 'mocha')
+      })
+
+      colorScheme.addEventListener('change', (event) => {
+        if (!manuallySelected) setTheme(event.matches ? 'mocha' : 'latte')
+      })
+
+      setTheme(colorScheme.matches ? 'mocha' : 'latte')
+    </script>
+  </body>
+</html>

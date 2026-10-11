@@ -39,6 +39,10 @@ exist only in JavaScript memory for the current browser tab. The app does not
 use local storage, session storage, cookies, accounts, analytics, or a server.
 Refreshing or leaving the page discards the session and its results.
 
+The Catppuccin Latte/Mocha appearance follows the system preference initially
+and can be changed from either page header. That choice is also kept only in
+memory and is not persisted between page loads.
+
 This is a project-level product constraint, not a temporary implementation
 shortcut. Future features should remain ephemeral unless that direction is
 explicitly reconsidered.
@@ -91,11 +95,11 @@ The first useful version should include:
 - A responsive setup → practice → results flow
 - Play, pause/replay, guess, reveal, and next controls
 - A small answer set, initially `2/4`, `3/4`, `4/4`, and `6/8`
-- A modest collection of locally stored, manually verified clips
 - A simple procedural rhythm generator using browser audio
-- Mixed practice drawing from both sources
+- Learn, Clear, and Grooves modes using reproducible procedural exercises
 - Lightweight feedback that identifies the meter and describes its beat grouping
-- Sensible audio loading, error, and empty-library states
+- Sensible audio lifecycle and error states
+- Static deployment on GitHub Pages
 
 Practice modes share one screen and exercise model. The initial procedural modes
 are **Learn**, **Clear**, and **Grooves**; curated and mixed-source selection can
@@ -175,6 +179,12 @@ The quality of the exercise set matters more than its size.
 
 Higher-quality procedural playback is an eventual upgrade: generate a rhythmic score or MIDI-like event sequence, then render it with realistic sampled instruments. Preserve the separation between score generation and sound rendering so this can be added without replacing the exercise model or UI flow.
 
+Sampled procedural instruments and curated music clips are separate upgrades.
+One-shot kick, snare, hi-hat, and bass samples can render the existing
+deterministic event scores more realistically. Complete curated tracks introduce
+a separate sourcing and meter-verification workflow and are planned after the
+first release.
+
 ## Content workflow
 
 For each curated clip:
@@ -192,10 +202,13 @@ Keep original generation prompts and provenance in internal content notes if use
 ## Success criteria for the first release
 
 - The full listen → guess → reveal → next loop works reliably on a phone.
-- Both procedural and curated exercises can appear through the same interface.
+- The procedural Learn, Clear, and Grooves modes are musically clear.
 - The learner cannot see the source before answering.
-- Every bundled clip has explicit verification metadata.
+- Included procedural families pass structural generator checks, and the limits
+  of their independent musical review are documented.
+- Keyboard, focus, touch, and audio interruption behavior have been checked.
 - The site can be built and deployed as static files on GitHub Pages.
-- A new verified clip can be added by placing the asset and editing the manifest.
 
-See [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for a staged build outline. Repository-level instructions for Codex are in [AGENTS.md](AGENTS.md).
+See [BACKLOG.md](BACKLOG.md) for the current roadmap and
+[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the original staged build
+outline. Repository-level instructions for Codex are in [AGENTS.md](AGENTS.md).

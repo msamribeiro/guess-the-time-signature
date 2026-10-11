@@ -17,6 +17,9 @@ import type {
   PlaybackTransform,
   SupportedMeter,
 } from './audio'
+import { initializeThemeToggle } from './theme'
+
+initializeThemeToggle()
 
 function requireElement<ElementType extends Element>(selector: string): ElementType {
   const element = document.querySelector<ElementType>(selector)

@@ -8,6 +8,8 @@ export default defineConfig({
       input: {
         practice: 'index.html',
         audioLab: 'audio-lab.html',
+        designOptions: 'design-options.html',
+        redesignGuidance: 'redesign-guidance.html',
       },
     },
   },

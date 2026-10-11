@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="latte">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,7 @@
       name="description"
       content="Learn and practice identifying 2/4, 3/4, 4/4, and 6/8 meter by ear."
     />
-    <meta name="theme-color" content="#111827" />
+    <meta name="theme-color" content="#eff1f5" />
     <title>Practice · Time Signature Ear Trainer</title>
   </head>
   <body>
@@ -15,20 +15,53 @@
     <main id="main-content" class="page-shell">
       <section class="practice-card">
         <header class="app-header">
-          <div>
-            <p class="eyebrow">Time Signature Ear Trainer</p>
-            <p class="app-subtitle">Build a focused listening session</p>
+          <div class="app-brand">
+            <span class="brand-mark" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </span>
+            <div>
+              <p class="brand-name">Time Signature<br />Ear Trainer</p>
+              <p class="app-subtitle">Build a focused listening session</p>
+            </div>
           </div>
-          <a class="audio-lab-link" href="./audio-lab.html">Audio Lab</a>
+          <div class="header-actions">
+            <div class="theme-switch" role="group" aria-label="Color theme">
+              <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+              <button class="theme-toggle" type="button" role="switch" data-theme-toggle aria-checked="false" aria-label="Switch to dark theme" title="Switch to dark theme"><span class="theme-switch-track" aria-hidden="true"><span class="theme-switch-thumb"></span></span></button>
+              <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+            </div>
+            <a class="audio-lab-link" href="./audio-lab.html">Open Audio Lab</a>
+          </div>
+          <details class="mobile-menu">
+            <summary>Menu</summary>
+            <div class="mobile-menu-panel">
+              <div class="mobile-menu-row">
+                <span>Appearance</span>
+                <div class="theme-switch" role="group" aria-label="Color theme">
+                  <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+                  <button class="theme-toggle" type="button" role="switch" data-theme-toggle aria-checked="false" aria-label="Switch to dark theme" title="Switch to dark theme"><span class="theme-switch-track" aria-hidden="true"><span class="theme-switch-thumb"></span></span></button>
+                  <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+                </div>
+              </div>
+              <a class="mobile-menu-link" href="./audio-lab.html">
+                <span>Open Audio Lab</span><span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </details>
         </header>
 
         <section id="setup-view" aria-labelledby="setup-title">
-          <h1 id="setup-title" tabindex="-1">What would you like to practice?</h1>
+          <h1 id="setup-title" tabindex="-1">Guess the time signature</h1>
           <p class="intro">
-            Choose the meters, listening mode, and length of this session.
+            Build a focused listening session to practice recognizing time signatures by ear.
+            Choose the meters, listening mode, and number of exercises.
           </p>
+          <div class="setup-pulse" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
 
           <form id="setup-form" class="setup-form">
+            <p class="setup-form-label">Session setup</p>
             <fieldset class="meter-control">
               <legend>Time signatures</legend>
               <div class="meter-options">
@@ -44,27 +77,27 @@
               <div class="mode-options">
                 <label>
                   <input type="radio" name="practice-mode" value="learn" />
-                  <span><strong>Learn</strong><small>Meter and counting guide stay visible.</small></span>
+                  <span><strong>Learn</strong><small>Follow the meter and counting guide while listening.</small></span>
                 </label>
                 <label>
                   <input type="radio" name="practice-mode" value="clear" checked />
-                  <span><strong>Clear</strong><small>Blind practice with strong grouping cues.</small></span>
+                  <span><strong>Clear</strong><small>Strong, readable grouping with fewer musical distractions.</small></span>
                 </label>
                 <label>
                   <input type="radio" name="practice-mode" value="groove" />
-                  <span><strong>Grooves</strong><small>Blind practice with the full arrangement.</small></span>
+                  <span><strong>Grooves</strong><small>Complete musical patterns with fewer listening clues.</small></span>
                 </label>
               </div>
             </fieldset>
 
             <label class="count-control" for="exercise-count">
-              <span>Session length</span>
+              <span>Exercises</span>
               <select id="exercise-count" name="exerciseCount">
-                <option value="5">5 exercises · quick</option>
-                <option value="10" selected>10 exercises</option>
-                <option value="20">20 exercises</option>
-                <option value="50">50 exercises</option>
-                <option value="100">100 exercises · challenge</option>
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
               </select>
             </label>
 

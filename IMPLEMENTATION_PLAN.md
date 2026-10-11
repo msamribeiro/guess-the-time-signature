@@ -1,5 +1,9 @@
 # Incremental Implementation Plan
 
+> This file records the original implementation sequence. The current roadmap,
+> release boundary, and prioritized backlog are maintained in
+> [`BACKLOG.md`](BACKLOG.md). Follow that document where the plans differ.
+
 This plan is deliberately small and sequential. Each milestone should leave a working, reviewable result.
 
 ## 0. Choose the smallest static foundation
