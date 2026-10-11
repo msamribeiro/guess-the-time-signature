@@ -76,33 +76,23 @@ button {
   font-size: 0.875rem;
 }
 
-.mode-switcher {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
-}
-
-.mode-switcher :is(button, a) {
+.audio-lab-link {
   display: grid;
+  flex: none;
   align-items: center;
   min-height: 2.5rem;
-  padding: 0.5rem 0.7rem;
-  color: #94a3b8;
+  padding: 0.5rem 0.85rem;
+  color: #c7d2fe;
   font-size: 0.8125rem;
   font-weight: 700;
   text-decoration: none;
-  background: transparent;
-  border: 0;
-  border-radius: 0.5rem;
-  cursor: pointer;
+  background: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 0.65rem;
 }
 
-.mode-switcher button[aria-pressed='true'] {
-  color: #f8fafc;
-  background: #3730a3;
+.audio-lab-link:hover {
+  border-color: #818cf8;
 }
 
 .meter-control {
@@ -195,6 +185,77 @@ button {
   color: #94a3b8;
   font-size: 0.8125rem;
   line-height: 1.4;
+}
+
+.progression {
+  margin-bottom: 2rem;
+}
+
+.stage-progress {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.stage-progress button {
+  display: flex;
+  min-width: 0;
+  min-height: 4.25rem;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.7rem;
+  color: #94a3b8;
+  text-align: left;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.stage-progress button:hover {
+  color: #e2e8f0;
+  border-color: #64748b;
+}
+
+.stage-progress button[aria-pressed='true'] {
+  color: #f8fafc;
+  background: #312e81;
+  border-color: #a5b4fc;
+}
+
+.stage-number {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  place-items: center;
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 50%;
+}
+
+.stage-progress button[aria-pressed='true'] .stage-number {
+  color: #1e1b4b;
+  background: #c7d2fe;
+  border-color: #c7d2fe;
+}
+
+.stage-label {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.stage-label strong {
+  font-size: 0.875rem;
+}
+
+.stage-label small {
+  font-size: 0.7rem;
+  line-height: 1.25;
 }
 
 .eyebrow,
@@ -513,9 +574,9 @@ button:disabled {
 .submit-action:focus-visible,
 .answer-button:focus-visible,
 .lesson-play:focus-visible,
-.mode-switcher button:focus-visible,
+.stage-progress button:focus-visible,
 .meter-options label:has(input:focus-visible),
-.mode-switcher a:focus-visible,
+.audio-lab-link:focus-visible,
 .generation-details summary:focus-visible,
 .feedback:focus-visible,
 .skip-link:focus-visible {
@@ -533,12 +594,13 @@ button:disabled {
     display: block;
   }
 
-  .mode-switcher {
+  .audio-lab-link {
+    display: inline-grid;
     margin-top: 1rem;
   }
 
-  .mode-switcher :is(button, a) {
-    flex: 1;
+  .stage-progress {
+    grid-template-columns: 1fr;
   }
 
   .answer-grid {
@@ -554,6 +616,10 @@ button:disabled {
   .lesson-grid,
   .feedback-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #advance-stage {
+    grid-column: 1 / -1;
   }
 }
 

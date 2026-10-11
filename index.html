@@ -19,12 +19,7 @@
             <p class="eyebrow">Time Signature Ear Trainer</p>
             <p class="app-subtitle">Three against six</p>
           </div>
-          <nav class="mode-switcher" aria-label="Practice modes and tools">
-            <button type="button" data-mode="learn" aria-pressed="true">Learn</button>
-            <button type="button" data-mode="clear" aria-pressed="false">Clear</button>
-            <button type="button" data-mode="groove" aria-pressed="false">Grooves</button>
-            <a href="./audio-lab.html">Audio Lab</a>
-          </nav>
+          <a class="audio-lab-link" href="./audio-lab.html">Audio Lab</a>
         </header>
 
         <fieldset class="meter-control">
@@ -39,6 +34,24 @@
             Choose at least two. Changes start a new learning session.
           </p>
         </fieldset>
+
+        <section class="progression" aria-labelledby="progression-label">
+          <p id="progression-label" class="section-label">Learning progression</p>
+          <nav class="stage-progress" aria-label="Learning progression steps">
+            <button type="button" data-mode="learn" aria-pressed="true" aria-current="step">
+              <span class="stage-number" aria-hidden="true">1</span>
+              <span class="stage-label"><strong>Learn</strong><small>Hear the pulse</small></span>
+            </button>
+            <button type="button" data-mode="clear" aria-pressed="false">
+              <span class="stage-number" aria-hidden="true">2</span>
+              <span class="stage-label"><strong>Clear</strong><small>Identify the meter</small></span>
+            </button>
+            <button type="button" data-mode="groove" aria-pressed="false">
+              <span class="stage-number" aria-hidden="true">3</span>
+              <span class="stage-label"><strong>Grooves</strong><small>Hear it in context</small></span>
+            </button>
+          </nav>
+        </section>
 
         <section id="learn-view" aria-labelledby="page-title">
           <h1 id="page-title"></h1>
@@ -114,6 +127,9 @@
               </button>
               <button id="next-exercise" class="primary-action" type="button">
                 Next exercise
+              </button>
+              <button id="advance-stage" class="secondary-action" type="button" hidden>
+                Try full grooves
               </button>
             </div>
           </section>

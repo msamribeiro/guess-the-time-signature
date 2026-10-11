@@ -67,6 +67,7 @@ const generationRecipe = requireElement<HTMLElement>('#generation-recipe')
 const regenerateReplayButton = requireElement<HTMLButtonElement>('#regenerate-replay')
 const accentedReplayButton = requireElement<HTMLButtonElement>('#accented-replay')
 const nextButton = requireElement<HTMLButtonElement>('#next-exercise')
+const advanceStageButton = requireElement<HTMLButtonElement>('#advance-stage')
 const audioStatus = requireElement<HTMLParagraphElement>('#audio-status')
 
 const renderer = new WebAudioRenderer()
@@ -253,6 +254,8 @@ function resetPractice(mode: Exclude<AppMode, 'learn'>): void {
     mode === 'clear'
       ? 'Bass and ornaments are removed, and the main beats are strongly accented.'
       : 'The bass and musical variations are back. Listen for the same underlying grouping.'
+  nextButton.textContent = mode === 'clear' ? 'Next clear exercise' : 'Next groove'
+  advanceStageButton.hidden = mode !== 'clear'
   playButton.textContent = 'Play excerpt'
   setPracticePlaybackIdle()
   renderSession()
@@ -266,7 +269,10 @@ function showMode(mode: AppMode): void {
   practiceView.hidden = mode === 'learn'
 
   for (const button of modeButtons) {
-    button.setAttribute('aria-pressed', String(button.dataset.mode === mode))
+    const isActive = button.dataset.mode === mode
+    button.setAttribute('aria-pressed', String(isActive))
+    if (isActive) button.setAttribute('aria-current', 'step')
+    else button.removeAttribute('aria-current')
   }
 
   if (mode === 'learn') {
@@ -279,7 +285,10 @@ function showMode(mode: AppMode): void {
 }
 
 for (const button of modeButtons) {
-  button.addEventListener('click', () => showMode(button.dataset.mode as AppMode))
+  button.addEventListener('click', () => {
+    const mode = button.dataset.mode as AppMode
+    if (mode !== activeMode) showMode(mode)
+  })
 }
 
 for (const input of meterInputs) {
@@ -371,6 +380,8 @@ nextButton.addEventListener('click', () => {
   renderSession()
   playButton.focus()
 })
+
+advanceStageButton.addEventListener('click', () => showMode('groove'))
 
 window.addEventListener('pagehide', () => void exercisePlayer.close())
 

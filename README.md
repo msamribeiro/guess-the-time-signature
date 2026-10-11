@@ -21,11 +21,11 @@ can run under a GitHub Pages repository subpath.
 
 `npm test` runs the focused automated checks. The current page lets the learner
 select any two or more of `2/4`, `3/4`, `4/4`, and `6/8`, then practice them in
-three stages: labeled examples, clear accented practice, and full musical grooves. See
-[`docs/audio-generation.md`](docs/audio-generation.md) for the score model, tempo
-semantics, and manual listening check.
+three numbered, directly selectable stages: labeled examples, clear accented
+practice, and full musical grooves. See [`docs/audio-generation.md`](docs/audio-generation.md)
+for the score model, tempo semantics, and manual listening check.
 
-Use the **Audio Lab** link beside the practice modes to configure and audition
+Use the **Audio Lab** link in the page header to configure and audition
 procedural exercises. The Audio Lab constrains category fields to supported
 options and can load or copy a normalized JSON recipe containing everything
 needed to reproduce the generated score. It is a free-form companion to the
