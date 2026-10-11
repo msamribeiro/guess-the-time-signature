@@ -90,7 +90,7 @@ with browser-audio limitations called out for manual testing.
 
 ### 4. Deploy and verify
 
-- [ ] Add a GitHub Pages deployment workflow.
+- [x] Add a GitHub Pages deployment workflow.
 - [ ] Verify relative assets and navigation under the repository subpath.
 - [ ] Test the deployed build on at least one real phone and one desktop browser.
 - [ ] Document supported browsers, local development, deployment, structural

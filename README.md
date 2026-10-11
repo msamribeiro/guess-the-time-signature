@@ -38,7 +38,7 @@ Pushes to `main` run the checks, build the static site, and deploy `dist/` with
 the GitHub Pages workflow in `.github/workflows/deploy-pages.yml`. The published
 site is expected at:
 
-<https://msamribeiro.github.io/guess-the-time-signature/>
+<https://msamribeiro.com/guess-the-time-signature/>
 
 In the repository settings, GitHub Pages must use **GitHub Actions** as its
 build and deployment source.
