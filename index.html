@@ -17,67 +17,84 @@
         <header class="app-header">
           <div>
             <p class="eyebrow">Time Signature Ear Trainer</p>
-            <p class="app-subtitle">Three against six</p>
+            <p class="app-subtitle">Build a focused listening session</p>
           </div>
           <a class="audio-lab-link" href="./audio-lab.html">Audio Lab</a>
         </header>
 
-        <fieldset class="meter-control">
-          <legend>Practice signatures</legend>
-          <div class="meter-options">
-            <label><input type="checkbox" value="2/4" /> <span>2/4</span></label>
-            <label><input type="checkbox" value="3/4" checked /> <span>3/4</span></label>
-            <label><input type="checkbox" value="4/4" /> <span>4/4</span></label>
-            <label><input type="checkbox" value="6/8" checked /> <span>6/8</span></label>
-          </div>
-          <p id="meter-selection-status" class="selection-hint" role="status" aria-live="polite">
-            Choose at least two. Changes start a new learning session.
+        <section id="setup-view" aria-labelledby="setup-title">
+          <h1 id="setup-title" tabindex="-1">What would you like to practice?</h1>
+          <p class="intro">
+            Choose the meters, listening mode, and length of this session.
           </p>
-        </fieldset>
 
-        <section class="progression" aria-labelledby="progression-label">
-          <p id="progression-label" class="section-label">Learning progression</p>
-          <nav class="stage-progress" aria-label="Learning progression steps">
-            <button type="button" data-mode="learn" aria-pressed="true" aria-current="step">
-              <span class="stage-number" aria-hidden="true">1</span>
-              <span class="stage-label"><strong>Learn</strong><small>Hear the pulse</small></span>
+          <form id="setup-form" class="setup-form">
+            <fieldset class="meter-control">
+              <legend>Time signatures</legend>
+              <div class="meter-options">
+                <label><input type="checkbox" value="2/4" /> <span>2/4</span></label>
+                <label><input type="checkbox" value="3/4" checked /> <span>3/4</span></label>
+                <label><input type="checkbox" value="4/4" /> <span>4/4</span></label>
+                <label><input type="checkbox" value="6/8" checked /> <span>6/8</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="mode-control">
+              <legend>Mode</legend>
+              <div class="mode-options">
+                <label>
+                  <input type="radio" name="practice-mode" value="learn" />
+                  <span><strong>Learn</strong><small>Meter and counting guide stay visible.</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="practice-mode" value="clear" checked />
+                  <span><strong>Clear</strong><small>Blind practice with strong grouping cues.</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="practice-mode" value="groove" />
+                  <span><strong>Grooves</strong><small>Blind practice with the full arrangement.</small></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <label class="count-control" for="exercise-count">
+              <span>Session length</span>
+              <select id="exercise-count" name="exerciseCount">
+                <option value="5">5 exercises · quick</option>
+                <option value="10" selected>10 exercises</option>
+                <option value="20">20 exercises</option>
+                <option value="50">50 exercises</option>
+                <option value="100">100 exercises · challenge</option>
+              </select>
+            </label>
+
+            <p id="setup-status" class="status" role="status" aria-live="polite"></p>
+            <button id="start-session" class="primary-action wide-action" type="submit">
+              Start session
             </button>
-            <button type="button" data-mode="clear" aria-pressed="false">
-              <span class="stage-number" aria-hidden="true">2</span>
-              <span class="stage-label"><strong>Clear</strong><small>Identify the meter</small></span>
-            </button>
-            <button type="button" data-mode="groove" aria-pressed="false">
-              <span class="stage-number" aria-hidden="true">3</span>
-              <span class="stage-label"><strong>Grooves</strong><small>Hear it in context</small></span>
-            </button>
-          </nav>
+          </form>
+          <p class="memory-note">
+            This session stays only in this browser tab. Nothing is saved or tracked.
+          </p>
         </section>
 
-        <section id="learn-view" aria-labelledby="page-title">
-          <h1 id="page-title"></h1>
-          <p id="lesson-introduction" class="intro"></p>
-
-          <div id="lesson-grid" class="lesson-grid"></div>
-
-          <p id="lesson-status" class="status" role="status" aria-live="polite">
-            Choose either labeled example.
-          </p>
-          <button id="start-clear-practice" class="primary-action wide-action" type="button">
-            Start clear practice
-          </button>
-        </section>
-
-        <section id="practice-view" aria-labelledby="practice-title" hidden>
+        <section id="session-view" aria-labelledby="practice-title" hidden>
           <div class="practice-heading">
             <div>
-              <p id="practice-level" class="eyebrow">Clear practice</p>
+              <p id="practice-level" class="eyebrow"></p>
               <h1 id="practice-title">What meter do you hear?</h1>
             </div>
-            <p id="exercise-number" class="exercise-number">Exercise 1</p>
+            <p id="exercise-number" class="exercise-number"></p>
           </div>
-          <p id="practice-description" class="intro">
-            Bass and ornaments are removed so the beat grouping is easier to hear.
-          </p>
+          <progress id="session-progress" class="session-progress" value="0" max="10"></progress>
+          <p id="practice-description" class="intro"></p>
+
+          <section id="learn-exercise" class="learn-exercise" aria-labelledby="learn-meter" hidden>
+            <p id="learn-meter" class="meter-label"></p>
+            <h2 id="learn-title"></h2>
+            <p id="learn-count" class="count-line"></p>
+            <p id="learn-explanation"></p>
+          </section>
 
           <div class="playback-controls">
             <button id="play-audio" class="primary-action" type="button">Play excerpt</button>
@@ -87,7 +104,11 @@
             Ready to play.
           </p>
 
-          <div class="answer-section">
+          <button id="learn-next" class="primary-action wide-action" type="button" hidden>
+            Next example
+          </button>
+
+          <div id="answer-section" class="answer-section">
             <p class="section-label">Choose an answer</p>
             <div id="answer-grid" class="answer-grid" role="group" aria-label="Time signature choices"></div>
             <button id="submit-answer" class="submit-action" type="button" disabled>
@@ -128,11 +149,30 @@
               <button id="next-exercise" class="primary-action" type="button">
                 Next exercise
               </button>
-              <button id="advance-stage" class="secondary-action" type="button" hidden>
-                Try full grooves
-              </button>
             </div>
           </section>
+
+          <button id="end-session" class="text-action" type="button">End session</button>
+        </section>
+
+        <section id="results-view" aria-labelledby="results-title" hidden>
+          <p class="eyebrow">Session complete</p>
+          <h1 id="results-title" tabindex="-1">Your results</h1>
+          <p id="results-summary" class="intro"></p>
+          <div id="score-callout" class="score-callout"></div>
+          <section class="results-breakdown" aria-labelledby="breakdown-title">
+            <h2 id="breakdown-title">By time signature</h2>
+            <div id="results-chart" class="results-chart"></div>
+          </section>
+          <div class="results-actions">
+            <button id="repeat-session" class="primary-action" type="button">
+              Practice this setup again
+            </button>
+            <button id="change-settings" class="secondary-action" type="button">
+              Change settings
+            </button>
+          </div>
+          <p class="memory-note">These results disappear when you leave or start over.</p>
         </section>
       </section>
     </main>

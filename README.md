@@ -2,9 +2,9 @@
 
 A personal, mobile-friendly web app for learning to recognize time signatures by ear.
 
-The project is in early development. It currently includes a minimal Vite and
-TypeScript foundation plus the product brief and implementation guidance; the
-practice loop has not been built yet.
+The project is in active development. It currently includes a Vite and
+TypeScript foundation, deterministic procedural rhythm generation, an Audio
+Lab, and a finite practice-session flow from setup through results.
 
 ## Local development
 
@@ -19,17 +19,29 @@ Use `npm run typecheck` for a focused TypeScript check and `npm run build` to
 produce the static site in `dist/`. Build assets use relative URLs so the output
 can run under a GitHub Pages repository subpath.
 
-`npm test` runs the focused automated checks. The current page lets the learner
-select any two or more of `2/4`, `3/4`, `4/4`, and `6/8`, then practice them in
-three numbered, directly selectable stages: labeled examples, clear accented
-practice, and full musical grooves. See [`docs/audio-generation.md`](docs/audio-generation.md)
-for the score model, tempo semantics, and manual listening check.
+`npm test` runs the focused automated checks. The landing page lets the learner
+choose among `2/4`, `3/4`, `4/4`, and `6/8`, select Learn, Clear, or Grooves,
+and set a finite session length. Learn supports focused practice with a single
+meter; the scored Clear and Grooves modes require at least two choices. See
+[`docs/audio-generation.md`](docs/audio-generation.md) for the score model,
+tempo semantics, and manual listening check.
 
 Use the **Audio Lab** link in the page header to configure and audition
 procedural exercises. The Audio Lab constrains category fields to supported
 options and can load or copy a normalized JSON recipe containing everything
 needed to reproduce the generated score. It is a free-form companion to the
 focused learner flow.
+
+## Ephemeral session data
+
+Configuration, the generated exercise queue, answers, and the results summary
+exist only in JavaScript memory for the current browser tab. The app does not
+use local storage, session storage, cookies, accounts, analytics, or a server.
+Refreshing or leaving the page discards the session and its results.
+
+This is a project-level product constraint, not a temporary implementation
+shortcut. Future features should remain ephemeral unless that direction is
+explicitly reconsidered.
 
 The visual direction references are kept in [`docs/design`](docs/design). They
 include ideas beyond the initial MVP and should not be treated as a requirement
@@ -44,10 +56,11 @@ The trainer will combine two complementary kinds of exercises:
 
 Both sources should use the same exercise experience:
 
-1. Play or replay the excerpt.
-2. Choose a time signature.
-3. Reveal the answer and a short explanation.
-4. Continue to the next exercise.
+1. Configure a finite session.
+2. Play or replay the current excerpt.
+3. Choose a time signature in scored modes.
+4. Reveal the answer and a short explanation.
+5. Continue to the next exercise and finish with an in-memory summary.
 
 The source of an exercise must remain hidden until the learner answers. This avoids biasing the guess and makes mixed practice feel coherent.
 
@@ -63,7 +76,7 @@ The source of an exercise must remain hidden until the learner answers. This avo
 ## Non-goals for the initial version
 
 - A backend or database
-- User accounts or cross-device progress
+- User accounts, saved history, or cross-device progress
 - Analytics or tracking
 - Social, competitive, or sharing features
 - A large design system or elaborate interface
@@ -75,7 +88,7 @@ The source of an exercise must remain hidden until the learner answers. This avo
 
 The first useful version should include:
 
-- A single responsive practice screen
+- A responsive setup → practice → results flow
 - Play, pause/replay, guess, reveal, and next controls
 - A small answer set, initially `2/4`, `3/4`, `4/4`, and `6/8`
 - A modest collection of locally stored, manually verified clips
@@ -84,7 +97,9 @@ The first useful version should include:
 - Lightweight feedback that identifies the meter and describes its beat grouping
 - Sensible audio loading, error, and empty-library states
 
-Practice modes such as **Learn**, **Real Music**, and **Mixed Practice** are a useful direction, but they do not all need distinct screens in the first release. A small mode selector is enough when the content supports it.
+Practice modes share one screen and exercise model. The initial procedural modes
+are **Learn**, **Clear**, and **Grooves**; curated and mixed-source selection can
+join the same flow once enough verified content exists.
 
 ## Exercise model
 

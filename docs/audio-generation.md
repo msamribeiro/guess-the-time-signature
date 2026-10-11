@@ -24,21 +24,29 @@ changing the session model or learner UI.
 This avoids the common ambiguity where “80 BPM in 6/8” might mean either eighth
 notes or dotted-quarter beats.
 
-## Practice comparisons
+## Practice sessions
 
-The practice page lets the learner select any two or more supported signatures:
-`2/4`, `3/4`, `4/4`, and `6/8`. The default remains `3/4` versus `6/8`; both
-contain six eighth-note subdivisions but organize them differently: three groups
-of two versus two groups of three. The initial library contains four reproducible
+The landing page configures a finite session using the supported signatures
+`2/4`, `3/4`, `4/4`, and `6/8`, one practice mode, and an exercise count. The
+default remains `3/4` versus `6/8`; both contain six eighth-note subdivisions
+but organize them differently: three groups of two versus two groups of three.
+The queue distributes exercises as evenly as possible across selected meters
+and shuffles their order. The initial library contains four reproducible
 families per meter at several tempos, while preserving each meter's underlying
 beat hierarchy.
 
-The learning progression has three explicit stages:
+The three modes use the same exercise and playback architecture:
 
 1. **Learn:** labeled examples, written counts, and a clear click on every main beat.
 2. **Clear practice:** blind exercises without bass or ornaments and with exaggerated
    hi-hat accents.
 3. **Full grooves:** blind exercises using the complete generated arrangement.
+
+Learn accepts one or more selected meters and is intentionally unscored. Clear
+and Grooves require at least two meters, record each submitted answer, and end
+with overall and per-meter accuracy. The active plan, generated queue, answers,
+and summary stay only in browser memory and disappear on refresh or navigation;
+no browser storage, account, analytics, or backend is involved.
 
 After any answer, the learner can replay that exact score with main-beat clicks.
 These teaching and replay scores are derived without mutating the generated score.

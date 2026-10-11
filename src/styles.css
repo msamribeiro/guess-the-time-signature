@@ -179,83 +179,238 @@ button {
   font-weight: 800;
 }
 
-.selection-hint {
-  min-height: 1.25rem;
-  margin: 0.5rem 0 0;
-  color: #94a3b8;
-  font-size: 0.8125rem;
-  line-height: 1.4;
-}
-
-.progression {
-  margin-bottom: 2rem;
-}
-
-.stage-progress {
+.setup-form {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
 
-.stage-progress button {
-  display: flex;
+.setup-form .meter-control {
+  margin-bottom: 0;
+}
+
+.mode-control {
   min-width: 0;
-  min-height: 4.25rem;
-  gap: 0.65rem;
-  align-items: center;
-  padding: 0.7rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.mode-control legend,
+.count-control > span {
+  margin-bottom: 0.5rem;
   color: #94a3b8;
-  text-align: left;
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mode-options {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.mode-options label {
+  position: relative;
+  display: flex;
+  min-height: 4rem;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  color: #cbd5e1;
+  background: #162033;
+  border: 1px solid #475569;
+  border-radius: 0.85rem;
   cursor: pointer;
 }
 
-.stage-progress button:hover {
-  color: #e2e8f0;
-  border-color: #64748b;
+.mode-options label::before {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  content: '';
+  border: 2px solid #64748b;
+  border-radius: 50%;
 }
 
-.stage-progress button[aria-pressed='true'] {
+.mode-options label:has(input:checked) {
   color: #f8fafc;
   background: #312e81;
   border-color: #a5b4fc;
 }
 
-.stage-number {
-  display: grid;
-  width: 1.75rem;
-  height: 1.75rem;
-  flex: none;
-  place-items: center;
-  color: #cbd5e1;
-  font-size: 0.75rem;
-  font-weight: 800;
-  background: #1e293b;
-  border: 1px solid #475569;
-  border-radius: 50%;
-}
-
-.stage-progress button[aria-pressed='true'] .stage-number {
-  color: #1e1b4b;
+.mode-options label:has(input:checked)::before {
   background: #c7d2fe;
-  border-color: #c7d2fe;
+  border: 4px solid #312e81;
+  outline: 2px solid #c7d2fe;
 }
 
-.stage-label {
+.mode-options input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mode-options span {
   display: grid;
-  min-width: 0;
-  gap: 0.12rem;
+  gap: 0.2rem;
 }
 
-.stage-label strong {
+.mode-options strong {
+  font-size: 0.9375rem;
+}
+
+.mode-options small {
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+.mode-options label:has(input:checked) small {
+  color: #c7d2fe;
+}
+
+.count-control {
+  display: grid;
+}
+
+.count-control select {
+  min-height: 3rem;
+  padding: 0.65rem 0.8rem;
+  color: #f8fafc;
+  font: inherit;
+  background: #162033;
+  border: 1px solid #475569;
+  border-radius: 0.75rem;
+}
+
+.memory-note {
+  margin: 1rem 0 0;
+  color: #94a3b8;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.session-progress {
+  width: 100%;
+  height: 0.55rem;
+  margin-top: 1rem;
+  overflow: hidden;
+  color: #818cf8;
+  background: #1e293b;
+  border: 0;
+  border-radius: 999px;
+}
+
+.session-progress::-webkit-progress-bar {
+  background: #1e293b;
+}
+
+.session-progress::-webkit-progress-value {
+  background: #818cf8;
+  border-radius: 999px;
+}
+
+.session-progress::-moz-progress-bar {
+  background: #818cf8;
+  border-radius: 999px;
+}
+
+.learn-exercise {
+  margin-bottom: 1rem;
+  padding: 1.15rem;
+  background: #162033;
+  border: 1px solid #3b4a62;
+  border-radius: 1rem;
+}
+
+.learn-exercise h2 {
+  margin: 0;
+}
+
+.learn-exercise > p:last-child {
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.text-action {
+  display: block;
+  min-height: 2.75rem;
+  margin: 1.5rem auto 0;
+  padding: 0.5rem 0.75rem;
+  color: #94a3b8;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.score-callout {
+  display: grid;
+  justify-items: center;
+  margin-block: 1.5rem;
+  padding: 1.25rem;
+  background: #312e81;
+  border: 1px solid #818cf8;
+  border-radius: 1rem;
+}
+
+.score-callout strong {
+  font-size: clamp(2.75rem, 12vw, 4.5rem);
+  line-height: 1;
+}
+
+.score-callout span {
+  margin-top: 0.35rem;
+  color: #c7d2fe;
+  font-weight: 700;
+}
+
+.results-breakdown h2 {
+  font-size: 1.25rem;
+}
+
+.results-chart {
+  display: grid;
+  gap: 1rem;
+}
+
+.result-row-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+  color: #cbd5e1;
   font-size: 0.875rem;
 }
 
-.stage-label small {
-  font-size: 0.7rem;
-  line-height: 1.25;
+.result-row-heading strong {
+  color: #f8fafc;
+  font-size: 1rem;
+}
+
+.result-track {
+  height: 0.75rem;
+  overflow: hidden;
+  background: #1e293b;
+  border-radius: 999px;
+}
+
+.result-bar {
+  display: block;
+  height: 100%;
+  background: #818cf8;
+  border-radius: inherit;
+}
+
+.results-actions {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.75rem;
 }
 
 .eyebrow,
@@ -295,29 +450,7 @@ h1 {
   line-height: 1.6;
 }
 
-.lesson-grid {
-  display: grid;
-  gap: 0.875rem;
-}
-
-.lesson-card {
-  padding: 1.15rem;
-  background: #162033;
-  border: 1px solid #3b4a62;
-  border-radius: 1rem;
-}
-
-.lesson-card h2 {
-  margin: 0;
-  font-size: 1.25rem;
-}
-
-.lesson-card p {
-  color: #cbd5e1;
-  line-height: 1.5;
-}
-
-.lesson-card .meter-label {
+.meter-label {
   margin: 0 0 0.25rem;
   color: #a5b4fc;
   font-size: 1.75rem;
@@ -331,26 +464,6 @@ h1 {
   white-space: pre-wrap;
   background: #0f172a;
   border-radius: 0.65rem;
-}
-
-.count-line strong {
-  color: #f8fafc;
-}
-
-.lesson-play {
-  width: 100%;
-  min-height: 3rem;
-  color: #f8fafc;
-  font-weight: 700;
-  background: #273449;
-  border: 1px solid #64748b;
-  border-radius: 0.75rem;
-  cursor: pointer;
-}
-
-.lesson-play[aria-pressed='true'] {
-  background: #7c2d12;
-  border-color: #fb923c;
 }
 
 .wide-action {
@@ -573,12 +686,15 @@ button:disabled {
 .secondary-action:focus-visible,
 .submit-action:focus-visible,
 .answer-button:focus-visible,
-.lesson-play:focus-visible,
-.stage-progress button:focus-visible,
 .meter-options label:has(input:focus-visible),
+.mode-options label:has(input:focus-visible),
+.count-control select:focus-visible,
 .audio-lab-link:focus-visible,
 .generation-details summary:focus-visible,
 .feedback:focus-visible,
+.text-action:focus-visible,
+#setup-title:focus-visible,
+#results-title:focus-visible,
 .skip-link:focus-visible {
   outline: 3px solid #f8fafc;
   outline-offset: 3px;
@@ -599,10 +715,6 @@ button:disabled {
     margin-top: 1rem;
   }
 
-  .stage-progress {
-    grid-template-columns: 1fr;
-  }
-
   .answer-grid {
     grid-template-columns: 1fr;
   }
@@ -613,19 +725,24 @@ button:disabled {
 }
 
 @media (min-width: 40rem) {
-  .lesson-grid,
-  .feedback-actions {
+  .feedback-actions,
+  .results-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  #advance-stage {
-    grid-column: 1 / -1;
+  .mode-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mode-options label {
+    align-items: flex-start;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .skip-link,
   .meter-options label,
+  .mode-options label,
   button {
     transition: 160ms ease;
   }

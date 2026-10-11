@@ -40,7 +40,10 @@ Exit condition: generated and curated exercises run through the same practice in
 
 ## 4. Add selection and minimal modes
 
-- Add Learn, Real Music, and Mixed filters if each has enough content.
+- Add a finite, in-memory session setup for meter choices, procedural mode, and
+  exercise count.
+- Show one exercise at a time and finish with an ephemeral accuracy summary.
+- Add Real Music and Mixed filters only when each has enough verified content.
 - Avoid immediate repeats and handle undersized or empty pools gracefully.
 - Keep source identity hidden in Mixed until reveal.
 
@@ -59,8 +62,13 @@ Exit condition: the MVP meets the success criteria in `README.md` on its deploye
 ## Later, only after the MVP is useful
 
 - Expand meters, groupings, genres, and difficulty levels cautiously.
-- Add optional local-only preferences or session history.
+- Add advanced per-session controls, such as tempo, bars, beat-unit guidance,
+  accents, or a manually supplied Audio Lab recipe, without persisting them.
 - Improve procedural realism by rendering the event sequence through sampled instruments or a MIDI-oriented layer.
 - Explore pedagogically useful comparisons, such as paired `3/4` and `6/8` examples.
+
+Session configuration, answers, and results remain in browser memory only. Do
+not add saved preferences, history, accounts, analytics, cookies, or another
+persistence mechanism unless the product direction is explicitly changed.
 
 Do not make later upgrades prerequisites for validating the core practice loop.
