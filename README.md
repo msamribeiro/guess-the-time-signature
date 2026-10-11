@@ -6,6 +6,11 @@ The project is in active development. It currently includes a Vite and
 TypeScript foundation, deterministic procedural rhythm generation, an Audio
 Lab, and a finite practice-session flow from setup through results.
 
+The first procedural version is live at
+<https://msamribeiro.com/guess-the-time-signature/>. See
+[`SESSION_HANDOFF.md`](SESSION_HANDOFF.md) for the current verified state and
+the exact next task; [`BACKLOG.md`](BACKLOG.md) remains the prioritized roadmap.
+
 ## Local development
 
 Requirements: Node.js 22.12 or newer and npm.

@@ -10,13 +10,22 @@ The product direction is intentionally hybrid:
 - Curated, manually verified audio clips offer realism and musical variety.
 - Both must share one exercise model and one UI flow.
 
-Read `README.md` before making product or architecture decisions. Use `IMPLEMENTATION_PLAN.md` as a sequence, not as permission to implement future phases early.
+Read `README.md` and `SESSION_HANDOFF.md` before making product or architecture
+decisions. `BACKLOG.md` is the current roadmap; `IMPLEMENTATION_PLAN.md` retains
+the original sequence for historical context.
 
 ## Current status
 
-This repository is a planning handoff. Do not assume an application, framework, package manager, or build system has already been chosen.
+The first procedural version is implemented and publicly deployed. It uses
+vanilla TypeScript, Vite, Vitest, browser Web Audio, and a GitHub Pages Actions
+workflow. Practice sessions, theme choices, answers, and results remain in
+browser memory only.
 
-When beginning implementation, inspect the repository first and preserve user-authored work. If a technology choice is still open, prefer the smallest maintainable option that produces a static GitHub Pages site. Do not introduce a framework merely in anticipation of future complexity.
+The next release work is generator validation, followed by session hardening,
+application-level tests, deployed-browser checks, and an explicitly tagged
+procedural release. Curated music is intentionally deferred until after that
+release. Inspect the repository and preserve user-authored work before making
+changes; do not introduce a framework merely in anticipation of complexity.
 
 ## Product constraints
 
@@ -34,14 +43,15 @@ Do not broaden scope without a clear user request.
 
 ## Delivery priorities
 
-Work in thin, testable slices:
+Work in thin, testable slices, following `BACKLOG.md`:
 
-1. Establish the shared exercise types and validate sample metadata.
-2. Complete the practice state flow with a tiny fixed fixture set.
-3. Add curated-clip playback.
-4. Add a simple deterministic procedural rhythm source.
-5. Mix sources and add minimal mode selection.
-6. Harden mobile audio, accessibility, error states, and GitHub Pages deployment.
+1. Add conservative structural validation for the procedural generator.
+2. Harden audio lifecycle, accessibility, and session edge cases.
+3. Add application-level regression coverage for the learner flow.
+4. Complete deployed mobile and desktop verification, documentation, and the
+   first procedural release tag.
+5. Treat advanced controls, sampled instruments, and curated clips as later
+   work unless the user explicitly reprioritizes them.
 
 At each step, keep the app runnable. Prefer finishing the end-to-end learning loop over adding settings, meters, genres, statistics, or visual polish.
 
