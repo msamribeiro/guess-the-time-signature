@@ -19,11 +19,12 @@ export class WebAudioRenderer {
   async play(score: RhythmScore, onEnded?: () => void): Promise<number> {
     this.stop()
     this.ensureAudioGraph()
+    const generation = this.playbackGeneration
     await this.context?.resume()
 
     if (!this.context || !this.output) throw new Error('Audio context could not be created.')
+    if (generation !== this.playbackGeneration) return 0
 
-    const generation = this.playbackGeneration
     const startAt = this.context.currentTime + 0.06
     const stepDuration = 60 / score.tempoBpm / score.stepsPerBeat
     const duration = scoreDurationSeconds(score)

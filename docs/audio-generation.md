@@ -7,9 +7,12 @@ The first procedural-audio slice separates musical decisions from browser sound:
    durations, musical roles, and optional MIDI pitches.
 3. `WebAudioRenderer` converts those events to scheduled browser audio.
 
-The practice flow will depend on the score and renderer interfaces, not on the
-current oscillator sounds. This keeps future sampled percussion or MIDI-style
-rendering from changing the generator or exercise model.
+The practice exercise stores the reproducible recipe rather than the rendered
+score. Session state reads source-neutral exercise metadata, while an exercise
+player delegates the playback reference to a source-specific adapter. The
+procedural adapter reconstructs the score and hands it to the renderer. This
+keeps future curated clips, sampled percussion, or MIDI-style rendering from
+changing the session model or learner UI.
 
 ## Tempo semantics
 
@@ -88,6 +91,7 @@ Run `npm run dev`, then listen to every example without watching its label.
 - Does `6/8` read as two main beats, each split into three?
 - Are the downbeat and subdivision sounds distinct at phone-speaker volume?
 - Does starting a different example immediately stop the previous one?
+- Does pressing the active labeled example again stop it immediately?
 
 Automated tests verify timing structure and determinism. The comparison is a
 learning aid rather than a request for the learner to certify musical correctness;

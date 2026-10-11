@@ -7,6 +7,12 @@ import {
   submitAnswer,
 } from './practiceSession'
 import { BEGINNER_PATTERN_DEFINITIONS } from '../audio/examples'
+import type { PracticeExercise } from './exercise'
+
+function proceduralFamily(exercise: PracticeExercise) {
+  if (exercise.playback.kind !== 'procedural') throw new Error('Expected a procedural exercise.')
+  return exercise.playback.recipe.patternFamily
+}
 
 describe('practice session', () => {
   it('keeps the answer absent until submission', () => {
@@ -24,7 +30,7 @@ describe('practice session', () => {
     const exercise = createPracticeExercise('answer', undefined, () => 0)
     const answered = submitAnswer(selectMeter(createPracticeSession(exercise), '3/4'))
 
-    expect(exercise.score.meter).toBe('3/4')
+    expect(exercise.meter).toBe('3/4')
     expect(answered).toMatchObject({ phase: 'answered', isCorrect: true })
   })
 
@@ -38,15 +44,15 @@ describe('practice session', () => {
 
   it('avoids repeating the same pattern family immediately', () => {
     const first = createPracticeExercise('first', undefined, () => 0)
-    const second = createPracticeExercise('second', first.score.patternFamily, () => 0)
+    const second = createPracticeExercise('second', first, () => 0)
 
-    expect(second.score.patternFamily).not.toBe(first.score.patternFamily)
+    expect(proceduralFamily(second)).not.toBe(proceduralFamily(first))
   })
 
   it('clears the answer and increments the exercise number on advance', () => {
     const first = createPracticeExercise('first', undefined, () => 0)
     const answered = submitAnswer(selectMeter(createPracticeSession(first), '3/4'))
-    const second = createPracticeExercise('second', first.score.patternFamily, () => 0.9)
+    const second = createPracticeExercise('second', first, () => 0.9)
     const advanced = advanceExercise(answered, second)
 
     expect(advanced).toMatchObject({ phase: 'ready', exerciseNumber: 2 })
@@ -82,16 +88,39 @@ describe('practice session', () => {
     const first = createPracticeExercise('two-four', undefined, () => 0, ['2/4', '4/4'])
     const last = createPracticeExercise('four-four', undefined, () => 0.999, ['2/4', '4/4'])
 
-    expect(['2/4', '4/4']).toContain(first.score.meter)
-    expect(['2/4', '4/4']).toContain(last.score.meter)
-    expect(['3/4', '6/8']).not.toContain(first.score.meter)
-    expect(['3/4', '6/8']).not.toContain(last.score.meter)
+    expect(['2/4', '4/4']).toContain(first.meter)
+    expect(['2/4', '4/4']).toContain(last.meter)
+    expect(['3/4', '6/8']).not.toContain(first.meter)
+    expect(['3/4', '6/8']).not.toContain(last.meter)
   })
 
   it('supports custom comparisons that were not predefined lessons', () => {
     const first = createPracticeExercise('two-six', undefined, () => 0, ['2/4', '6/8'])
     const last = createPracticeExercise('six-two', undefined, () => 0.999, ['2/4', '6/8'])
 
-    expect(new Set([first.score.meter, last.score.meter])).toEqual(new Set(['2/4', '6/8']))
+    expect(new Set([first.meter, last.meter])).toEqual(new Set(['2/4', '6/8']))
+  })
+
+  it('answers a curated exercise through the same session state', () => {
+    const exercise: PracticeExercise = {
+      id: 'curated-6-8-001',
+      meter: '6/8',
+      grouping: '3+3',
+      difficulty: 'beginner',
+      title: 'Verified compound groove',
+      explanation: 'Two broad beats, each divided into three.',
+      verification: {
+        status: 'verified',
+        method: 'manual count and downbeat review',
+      },
+      playback: {
+        kind: 'curated',
+        assetPath: 'audio/curated-6-8-001.ogg',
+        durationSeconds: 12,
+      },
+    }
+
+    const answered = submitAnswer(selectMeter(createPracticeSession(exercise), '6/8'))
+    expect(answered).toMatchObject({ phase: 'answered', isCorrect: true })
   })
 })

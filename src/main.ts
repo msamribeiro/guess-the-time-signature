@@ -2,14 +2,13 @@ import './styles.css'
 import {
   AUDIO_EXAMPLES,
   createAccentedReplayScore,
-  createClearPracticeScore,
-  createGenerationRecipe,
-  renderRecipeScore,
   serializeGenerationRecipe,
   WebAudioRenderer,
 } from './audio'
-import type { GenerationRecipe, RhythmScore } from './audio'
+import type { PlaybackTransform, RhythmScore } from './audio'
 import { METER_GUIDES, METER_ORDER, practiceSetCopy } from './lessons'
+import { ExercisePlayer, ProceduralPlaybackAdapter } from './playback/exercisePlayer'
+import { generationRecipeFor } from './practice/exercise'
 import {
   advanceExercise,
   createPracticeExercise,
@@ -58,6 +57,7 @@ const feedbackCount = requireElement<HTMLParagraphElement>('#feedback-count')
 const feedbackCue = requireElement<HTMLParagraphElement>('#feedback-cue')
 const feedbackAmbiguity = requireElement<HTMLParagraphElement>('#feedback-ambiguity')
 const feedbackSource = requireElement<HTMLParagraphElement>('#feedback-source')
+const generationDetails = requireElement<HTMLDetailsElement>('#generation-details')
 const detailTempo = requireElement<HTMLElement>('#detail-tempo')
 const detailBars = requireElement<HTMLElement>('#detail-bars')
 const detailPattern = requireElement<HTMLElement>('#detail-pattern')
@@ -70,10 +70,13 @@ const nextButton = requireElement<HTMLButtonElement>('#next-exercise')
 const audioStatus = requireElement<HTMLParagraphElement>('#audio-status')
 
 const renderer = new WebAudioRenderer()
+const exercisePlayer = new ExercisePlayer([new ProceduralPlaybackAdapter(renderer)])
 let seedCounter = 1
 let activeMode: AppMode = 'learn'
 let activeMeters: readonly PracticeMeter[] = ['3/4', '6/8']
 let answerButtons: HTMLButtonElement[] = []
+let guideButtons = new Map<PracticeMeter, HTMLButtonElement>()
+let activeGuideMeter: PracticeMeter | undefined
 let session: PracticeSession = createPracticeSession(
   createPracticeExercise(`practice-${seedCounter}`, undefined, Math.random, activeMeters),
 )
@@ -84,21 +87,8 @@ function guideScore(meter: PracticeMeter): RhythmScore {
   return createAccentedReplayScore(example.score)
 }
 
-function practiceScore(): RhythmScore {
-  return activeMode === 'clear'
-    ? createClearPracticeScore(session.exercise.score)
-    : session.exercise.score
-}
-
-function currentRecipe(): GenerationRecipe {
-  return createGenerationRecipe(
-    session.exercise.score,
-    activeMode === 'clear' ? 'clear-practice' : 'full-groove',
-  )
-}
-
-function scoreForRecipe(recipe: GenerationRecipe): RhythmScore {
-  return renderRecipeScore(recipe)
+function activePlaybackTransform(): PlaybackTransform {
+  return activeMode === 'clear' ? 'clear-practice' : 'full-groove'
 }
 
 function setPracticePlaybackIdle(message = 'Ready to play.'): void {
@@ -107,14 +97,39 @@ function setPracticePlaybackIdle(message = 'Ready to play.'): void {
   audioStatus.textContent = message
 }
 
+function setGuidedPlaybackIdle(message?: string): void {
+  activeGuideMeter = undefined
+  for (const [meter, button] of guideButtons) {
+    button.textContent = `Play ${meter} example`
+    button.setAttribute('aria-pressed', 'false')
+  }
+  if (message) lessonStatus.textContent = message
+}
+
 async function playGuidedExample(meter: PracticeMeter): Promise<void> {
+  if (activeGuideMeter === meter) {
+    exercisePlayer.stop()
+    setGuidedPlaybackIdle(`${meter} example stopped.`)
+    return
+  }
+
+  exercisePlayer.stop()
+  setGuidedPlaybackIdle()
+  activeGuideMeter = meter
+  const activeButton = guideButtons.get(meter)
+  if (activeButton) {
+    activeButton.textContent = `Stop ${meter} example`
+    activeButton.setAttribute('aria-pressed', 'true')
+  }
   lessonStatus.textContent = `Playing the labeled ${meter} grouping…`
   try {
     await renderer.play(guideScore(meter), () => {
-      lessonStatus.textContent = `${meter} example finished. Listen again or compare it with the other selected meters.`
+      setGuidedPlaybackIdle(
+        `${meter} example finished. Listen again or compare it with the other selected meters.`,
+      )
     })
   } catch {
-    lessonStatus.textContent = 'Audio could not start. Check your browser settings and try again.'
+    setGuidedPlaybackIdle('Audio could not start. Check your browser settings and try again.')
   }
 }
 
@@ -124,6 +139,8 @@ function renderLesson(): void {
   pageTitle.textContent = copy.title
   lessonIntroduction.textContent = copy.introduction
   lessonGrid.replaceChildren()
+  guideButtons = new Map()
+  activeGuideMeter = undefined
 
   activeMeters.forEach((selectedMeter) => {
     const details = METER_GUIDES[selectedMeter]
@@ -149,7 +166,9 @@ function renderLesson(): void {
     play.className = 'lesson-play'
     play.type = 'button'
     play.textContent = `Play ${details.meter} example`
+    play.setAttribute('aria-pressed', 'false')
     play.addEventListener('click', () => void playGuidedExample(details.meter))
+    guideButtons.set(details.meter, play)
 
     card.append(meter, heading, count, explanation, play)
     lessonGrid.append(card)
@@ -192,18 +211,22 @@ function renderSession(): void {
 
   if (!isAnswered) return
 
-  const score = session.exercise.score
+  const exercise = session.exercise
   feedback.dataset.result = session.isCorrect ? 'correct' : 'incorrect'
   feedbackHeading.textContent = session.isCorrect ? 'Correct' : 'Not quite'
-  feedbackAnswer.textContent = `The intended hearing is ${score.meter}, grouped ${score.grouping}.`
-  feedbackCount.textContent = METER_GUIDES[score.meter].count
-  feedbackCue.textContent = session.exercise.listeningCue
+  feedbackAnswer.textContent = `The intended hearing is ${exercise.meter}, grouped ${exercise.grouping}.`
+  feedbackCount.textContent = METER_GUIDES[exercise.meter].count
+  feedbackCue.textContent = exercise.explanation
   const ambiguityNote = practiceSetCopy(activeMeters).ambiguityNote
   feedbackAmbiguity.hidden = !ambiguityNote
   feedbackAmbiguity.textContent = ambiguityNote ?? ''
-  feedbackSource.textContent = `Source: procedural · ${session.exercise.title}`
+  feedbackSource.textContent = `Source: ${exercise.playback.kind} · ${exercise.title}`
 
-  const recipe = currentRecipe()
+  const recipe = generationRecipeFor(exercise, activePlaybackTransform())
+  generationDetails.hidden = !recipe
+  regenerateReplayButton.hidden = !recipe
+  accentedReplayButton.hidden = !recipe
+  if (!recipe) return
   detailTempo.textContent = `${recipe.tempoBpm} BPM (${recipe.tempoBeatUnit.replace('-', ' ')})`
   detailBars.textContent = `${recipe.bars} bars`
   detailPattern.textContent = recipe.patternFamily
@@ -214,7 +237,7 @@ function renderSession(): void {
 }
 
 function resetPractice(mode: Exclude<AppMode, 'learn'>): void {
-  renderer.stop()
+  exercisePlayer.stop()
   seedCounter += 1
   session = createPracticeSession(
     createPracticeExercise(
@@ -236,7 +259,8 @@ function resetPractice(mode: Exclude<AppMode, 'learn'>): void {
 }
 
 function showMode(mode: AppMode): void {
-  renderer.stop()
+  exercisePlayer.stop()
+  setGuidedPlaybackIdle()
   activeMode = mode
   learnView.hidden = mode !== 'learn'
   practiceView.hidden = mode === 'learn'
@@ -285,7 +309,7 @@ playButton.addEventListener('click', async () => {
   audioStatus.textContent = 'Playing excerpt…'
 
   try {
-    await renderer.play(practiceScore(), () => {
+    await exercisePlayer.play(session.exercise, activePlaybackTransform(), () => {
       playButton.textContent = 'Replay excerpt'
       setPracticePlaybackIdle('Excerpt finished. Replay it as often as you need.')
     })
@@ -295,7 +319,7 @@ playButton.addEventListener('click', async () => {
 })
 
 stopButton.addEventListener('click', () => {
-  renderer.stop()
+  exercisePlayer.stop()
   playButton.textContent = 'Replay excerpt'
   setPracticePlaybackIdle('Playback stopped.')
 })
@@ -311,7 +335,7 @@ accentedReplayButton.addEventListener('click', async () => {
   stopButton.disabled = false
   audioStatus.textContent = 'Replaying with a clear click on every main beat…'
   try {
-    await renderer.play(createAccentedReplayScore(session.exercise.score), () => {
+    await exercisePlayer.play(session.exercise, 'accented-replay', () => {
       setPracticePlaybackIdle('Accented replay finished.')
     })
   } catch {
@@ -324,7 +348,7 @@ regenerateReplayButton.addEventListener('click', async () => {
   stopButton.disabled = false
   audioStatus.textContent = 'Regenerating the score from the displayed parameters…'
   try {
-    await renderer.play(scoreForRecipe(currentRecipe()), () => {
+    await exercisePlayer.play(session.exercise, activePlaybackTransform(), () => {
       setPracticePlaybackIdle('Regenerated replay finished.')
     })
   } catch {
@@ -333,11 +357,11 @@ regenerateReplayButton.addEventListener('click', async () => {
 })
 
 nextButton.addEventListener('click', () => {
-  renderer.stop()
+  exercisePlayer.stop()
   seedCounter += 1
   const nextExercise = createPracticeExercise(
     `practice-${seedCounter}-${Date.now()}`,
-    session.exercise.score.patternFamily,
+    session.exercise,
     Math.random,
     activeMeters,
   )
@@ -348,7 +372,7 @@ nextButton.addEventListener('click', () => {
   playButton.focus()
 })
 
-window.addEventListener('pagehide', () => void renderer.close())
+window.addEventListener('pagehide', () => void exercisePlayer.close())
 
 renderLesson()
 showMode('learn')

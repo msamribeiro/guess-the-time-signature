@@ -1,17 +1,14 @@
 import { BEGINNER_PATTERN_DEFINITIONS } from '../audio/examples'
+import { createGenerationRecipe } from '../audio/generationRecipe'
 import { generateRhythm } from '../audio/generateRhythm'
-import type { PatternFamily, RhythmScore, SupportedMeter } from '../audio/types'
+import type { SupportedMeter } from '../audio/types'
+import type { PracticeExercise } from './exercise'
+
+export type { PracticeExercise } from './exercise'
 
 export type PracticeMeter = SupportedMeter
 export type PracticePhase = 'ready' | 'answered'
 
-export interface PracticeExercise {
-  id: string
-  source: 'procedural'
-  title: string
-  listeningCue: string
-  score: RhythmScore
-}
 export interface PracticeSession {
   exercise: PracticeExercise
   phase: PracticePhase
@@ -22,10 +19,14 @@ export interface PracticeSession {
 
 export function createPracticeExercise(
   seed: string,
-  previousFamily?: PatternFamily,
+  previousExercise?: PracticeExercise,
   random: () => number = Math.random,
   meters: readonly PracticeMeter[] = ['3/4', '6/8'],
 ): PracticeExercise {
+  const previousFamily =
+    previousExercise?.playback.kind === 'procedural'
+      ? previousExercise.playback.recipe.patternFamily
+      : undefined
   const candidates = BEGINNER_PATTERN_DEFINITIONS.filter(
     (definition) =>
       definition.patternFamily !== previousFamily && meters.includes(definition.meter),
@@ -35,18 +36,30 @@ export function createPracticeExercise(
 
   if (!definition) throw new Error('No beginner patterns are available.')
 
+  const score = generateRhythm({
+    meter: definition.meter,
+    patternFamily: definition.patternFamily,
+    seed,
+    tempoBpm: definition.tempoBpm,
+    bars: definition.bars,
+  })
+
   return {
     id: `${definition.patternFamily}:${seed}`,
-    source: 'procedural',
+    meter: score.meter,
+    grouping: score.grouping,
+    difficulty: 'beginner',
     title: definition.title,
-    listeningCue: definition.listeningCue,
-    score: generateRhythm({
-      meter: definition.meter,
-      patternFamily: definition.patternFamily,
-      seed,
-      tempoBpm: definition.tempoBpm,
-      bars: definition.bars,
-    }),
+    explanation: definition.listeningCue,
+    verification: {
+      status: 'reviewed',
+      method: 'deterministic generator rules and manual listening',
+      notes: 'Structural accents remain stable while seeded ornaments may vary.',
+    },
+    playback: {
+      kind: 'procedural',
+      recipe: createGenerationRecipe(score, 'full-groove'),
+    },
   }
 }
 
@@ -68,7 +81,7 @@ export function submitAnswer(session: PracticeSession): PracticeSession {
   return {
     ...session,
     phase: 'answered',
-    isCorrect: session.selectedMeter === session.exercise.score.meter,
+    isCorrect: session.selectedMeter === session.exercise.meter,
   }
 }
 

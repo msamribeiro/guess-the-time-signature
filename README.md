@@ -90,6 +90,11 @@ Practice modes such as **Learn**, **Real Music**, and **Mixed Practice** are a u
 
 Procedural and recorded exercises should be normalized into one runtime shape so the player and answer flow do not care where an exercise came from.
 
+The current runtime model follows that shape: shared teaching metadata is paired
+with a discriminated playback reference for either a procedural recipe or a
+curated asset. Session state reads only the shared metadata, while an exercise
+player routes playback to a source-specific adapter.
+
 An exercise should have, at minimum:
 
 - A stable unique ID
