@@ -78,7 +78,7 @@ describe('practice session', () => {
     expect(fourFour.every((definition) => definition.bars * 4 === 16)).toBe(true)
   })
 
-  it('selects exercises only from the active lesson meters', () => {
+  it('selects exercises only from the active meter set', () => {
     const first = createPracticeExercise('two-four', undefined, () => 0, ['2/4', '4/4'])
     const last = createPracticeExercise('four-four', undefined, () => 0.999, ['2/4', '4/4'])
 
@@ -86,5 +86,12 @@ describe('practice session', () => {
     expect(['2/4', '4/4']).toContain(last.score.meter)
     expect(['3/4', '6/8']).not.toContain(first.score.meter)
     expect(['3/4', '6/8']).not.toContain(last.score.meter)
+  })
+
+  it('supports custom comparisons that were not predefined lessons', () => {
+    const first = createPracticeExercise('two-six', undefined, () => 0, ['2/4', '6/8'])
+    const last = createPracticeExercise('six-two', undefined, () => 0.999, ['2/4', '6/8'])
+
+    expect(new Set([first.score.meter, last.score.meter])).toEqual(new Set(['2/4', '6/8']))
   })
 })

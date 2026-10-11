@@ -9,7 +9,7 @@ import {
   WebAudioRenderer,
 } from './audio'
 import type { GenerationRecipe, RhythmScore } from './audio'
-import { DEFAULT_LESSON_ID, LESSONS, type LessonDefinition, type LessonId } from './lessons'
+import { METER_GUIDES, METER_ORDER, practiceSetCopy } from './lessons'
 import {
   advanceExercise,
   createPracticeExercise,
@@ -33,7 +33,10 @@ function requireElement<ElementType extends Element>(
 
 const modeButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-mode]'))
 const appSubtitle = requireElement<HTMLParagraphElement>('.app-subtitle')
-const lessonSelect = requireElement<HTMLSelectElement>('#lesson-select')
+const meterInputs = Array.from(
+  document.querySelectorAll<HTMLInputElement>('.meter-options input[type="checkbox"]'),
+)
+const meterSelectionStatus = requireElement<HTMLParagraphElement>('#meter-selection-status')
 const learnView = requireElement<HTMLElement>('#learn-view')
 const practiceView = requireElement<HTMLElement>('#practice-view')
 const pageTitle = requireElement<HTMLHeadingElement>('#page-title')
@@ -46,9 +49,7 @@ const practiceDescription = requireElement<HTMLParagraphElement>('#practice-desc
 const exerciseNumber = requireElement<HTMLParagraphElement>('#exercise-number')
 const playButton = requireElement<HTMLButtonElement>('#play-audio')
 const stopButton = requireElement<HTMLButtonElement>('#stop-audio')
-const answerButtons = Array.from(
-  document.querySelectorAll<HTMLButtonElement>('[data-answer-index]'),
-)
+const answerGrid = requireElement<HTMLDivElement>('#answer-grid')
 const submitButton = requireElement<HTMLButtonElement>('#submit-answer')
 const feedback = requireElement<HTMLElement>('#feedback')
 const feedbackHeading = requireElement<HTMLHeadingElement>('#feedback-heading')
@@ -71,14 +72,11 @@ const audioStatus = requireElement<HTMLParagraphElement>('#audio-status')
 const renderer = new WebAudioRenderer()
 let seedCounter = 1
 let activeMode: AppMode = 'learn'
-let activeLessonId: LessonId = DEFAULT_LESSON_ID
+let activeMeters: readonly PracticeMeter[] = ['3/4', '6/8']
+let answerButtons: HTMLButtonElement[] = []
 let session: PracticeSession = createPracticeSession(
-  createPracticeExercise(`practice-${seedCounter}`),
+  createPracticeExercise(`practice-${seedCounter}`, undefined, Math.random, activeMeters),
 )
-
-function activeLesson(): LessonDefinition {
-  return LESSONS[activeLessonId]
-}
 
 function guideScore(meter: PracticeMeter): RhythmScore {
   const example = AUDIO_EXAMPLES.find((candidate) => candidate.score.meter === meter)
@@ -113,7 +111,7 @@ async function playGuidedExample(meter: PracticeMeter): Promise<void> {
   lessonStatus.textContent = `Playing the labeled ${meter} grouping…`
   try {
     await renderer.play(guideScore(meter), () => {
-      lessonStatus.textContent = `${meter} example finished. Listen again or compare it with the other meter.`
+      lessonStatus.textContent = `${meter} example finished. Listen again or compare it with the other selected meters.`
     })
   } catch {
     lessonStatus.textContent = 'Audio could not start. Check your browser settings and try again.'
@@ -121,13 +119,14 @@ async function playGuidedExample(meter: PracticeMeter): Promise<void> {
 }
 
 function renderLesson(): void {
-  const lesson = activeLesson()
-  appSubtitle.textContent = lesson.subtitle
-  pageTitle.textContent = lesson.title
-  lessonIntroduction.textContent = lesson.introduction
+  const copy = practiceSetCopy(activeMeters)
+  appSubtitle.textContent = copy.subtitle
+  pageTitle.textContent = copy.title
+  lessonIntroduction.textContent = copy.introduction
   lessonGrid.replaceChildren()
 
-  lesson.meters.forEach((details) => {
+  activeMeters.forEach((selectedMeter) => {
+    const details = METER_GUIDES[selectedMeter]
     const card = document.createElement('article')
     card.className = 'lesson-card'
 
@@ -156,12 +155,26 @@ function renderLesson(): void {
     lessonGrid.append(card)
   })
 
-  answerButtons.forEach((button, index) => {
-    const details = lesson.meters[index]
-    if (!details) return
+  answerGrid.replaceChildren()
+  answerButtons = activeMeters.map((selectedMeter) => {
+    const details = METER_GUIDES[selectedMeter]
+    const button = document.createElement('button')
+    const meter = document.createElement('strong')
+    const description = document.createElement('span')
+
+    button.className = 'answer-button'
+    button.type = 'button'
     button.dataset.meter = details.meter
-    requireElement<HTMLElement>('strong', button).textContent = details.meter
-    requireElement<HTMLElement>('span', button).textContent = details.answerLabel
+    button.setAttribute('aria-pressed', 'false')
+    meter.textContent = details.meter
+    description.textContent = details.answerLabel
+    button.append(meter, description)
+    button.addEventListener('click', () => {
+      session = selectMeter(session, details.meter)
+      renderSession()
+    })
+    answerGrid.append(button)
+    return button
   })
 }
 
@@ -183,11 +196,11 @@ function renderSession(): void {
   feedback.dataset.result = session.isCorrect ? 'correct' : 'incorrect'
   feedbackHeading.textContent = session.isCorrect ? 'Correct' : 'Not quite'
   feedbackAnswer.textContent = `The intended hearing is ${score.meter}, grouped ${score.grouping}.`
-  feedbackCount.textContent =
-    activeLesson().meters.find((details) => details.meter === score.meter)?.count ?? ''
+  feedbackCount.textContent = METER_GUIDES[score.meter].count
   feedbackCue.textContent = session.exercise.listeningCue
-  feedbackAmbiguity.hidden = !activeLesson().ambiguityNote
-  feedbackAmbiguity.textContent = activeLesson().ambiguityNote ?? ''
+  const ambiguityNote = practiceSetCopy(activeMeters).ambiguityNote
+  feedbackAmbiguity.hidden = !ambiguityNote
+  feedbackAmbiguity.textContent = ambiguityNote ?? ''
   feedbackSource.textContent = `Source: procedural · ${session.exercise.title}`
 
   const recipe = currentRecipe()
@@ -208,7 +221,7 @@ function resetPractice(mode: Exclude<AppMode, 'learn'>): void {
       `practice-${seedCounter}-${Date.now()}`,
       undefined,
       Math.random,
-      activeLesson().meters.map((details) => details.meter),
+      activeMeters,
     ),
   )
   activeMode = mode
@@ -233,7 +246,7 @@ function showMode(mode: AppMode): void {
   }
 
   if (mode === 'learn') {
-    lessonStatus.textContent = 'Choose either labeled example.'
+    lessonStatus.textContent = 'Choose any labeled example to compare the selected meters.'
     return
   }
 
@@ -245,11 +258,24 @@ for (const button of modeButtons) {
   button.addEventListener('click', () => showMode(button.dataset.mode as AppMode))
 }
 
-lessonSelect.addEventListener('change', () => {
-  activeLessonId = lessonSelect.value as LessonId
-  renderLesson()
-  showMode('learn')
-})
+for (const input of meterInputs) {
+  input.addEventListener('change', () => {
+    const selectedMeters = METER_ORDER.filter((meter) =>
+      meterInputs.some((candidate) => candidate.value === meter && candidate.checked),
+    )
+
+    if (selectedMeters.length < 2) {
+      input.checked = true
+      meterSelectionStatus.textContent = 'Keep at least two signatures selected for comparison.'
+      return
+    }
+
+    activeMeters = selectedMeters
+    meterSelectionStatus.textContent = `Practicing ${activeMeters.join(', ')}.`
+    renderLesson()
+    showMode('learn')
+  })
+}
 
 startClearButton.addEventListener('click', () => showMode('clear'))
 
@@ -273,13 +299,6 @@ stopButton.addEventListener('click', () => {
   playButton.textContent = 'Replay excerpt'
   setPracticePlaybackIdle('Playback stopped.')
 })
-
-for (const button of answerButtons) {
-  button.addEventListener('click', () => {
-    session = selectMeter(session, button.dataset.meter as PracticeMeter)
-    renderSession()
-  })
-}
 
 submitButton.addEventListener('click', () => {
   session = submitAnswer(session)
@@ -320,7 +339,7 @@ nextButton.addEventListener('click', () => {
     `practice-${seedCounter}-${Date.now()}`,
     session.exercise.score.patternFamily,
     Math.random,
-    activeLesson().meters.map((details) => details.meter),
+    activeMeters,
   )
   session = advanceExercise(session, nextExercise)
   playButton.textContent = 'Play excerpt'

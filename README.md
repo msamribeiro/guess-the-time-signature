@@ -19,9 +19,9 @@ Use `npm run typecheck` for a focused TypeScript check and `npm run build` to
 produce the static site in `dist/`. Build assets use relative URLs so the output
 can run under a GitHub Pages repository subpath.
 
-`npm test` runs the focused automated checks. The current page provides focused
-`3/4` versus `6/8` and `2/4` versus `4/4` lessons in three stages: labeled
-examples, clear accented practice, and full musical grooves. See
+`npm test` runs the focused automated checks. The current page lets the learner
+select any two or more of `2/4`, `3/4`, `4/4`, and `6/8`, then practice them in
+three stages: labeled examples, clear accented practice, and full musical grooves. See
 [`docs/audio-generation.md`](docs/audio-generation.md) for the score model, tempo
 semantics, and manual listening check.
 

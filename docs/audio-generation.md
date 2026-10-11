@@ -21,13 +21,14 @@ rendering from changing the generator or exercise model.
 This avoids the common ambiguity where “80 BPM in 6/8” might mean either eighth
 notes or dotted-quarter beats.
 
-## Initial practice comparison
+## Practice comparisons
 
-The practice page currently concentrates on `3/4` versus `6/8`. Both contain six
-eighth-note subdivisions but organize them differently: three groups of two
-versus two groups of three. It selects from two reproducible, four-bar pattern
-families for each meter. The initial library currently contains four families per
-meter at several tempos, while preserving the same underlying beat hierarchy.
+The practice page lets the learner select any two or more supported signatures:
+`2/4`, `3/4`, `4/4`, and `6/8`. The default remains `3/4` versus `6/8`; both
+contain six eighth-note subdivisions but organize them differently: three groups
+of two versus two groups of three. The initial library contains four reproducible
+families per meter at several tempos, while preserving each meter's underlying
+beat hierarchy.
 
 The learning progression has three explicit stages:
 

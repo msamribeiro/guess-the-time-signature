@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Learn and practice hearing the difference between 3/4 and 6/8 meter."
+      content="Learn and practice identifying 2/4, 3/4, 4/4, and 6/8 meter by ear."
     />
     <meta name="theme-color" content="#111827" />
     <title>Practice · Time Signature Ear Trainer</title>
@@ -27,13 +27,18 @@
           </nav>
         </header>
 
-        <label class="lesson-control" for="lesson-select">
-          <span>Lesson</span>
-          <select id="lesson-select">
-            <option value="three-vs-six">3/4 versus 6/8</option>
-            <option value="two-vs-four">2/4 versus 4/4</option>
-          </select>
-        </label>
+        <fieldset class="meter-control">
+          <legend>Practice signatures</legend>
+          <div class="meter-options">
+            <label><input type="checkbox" value="2/4" /> <span>2/4</span></label>
+            <label><input type="checkbox" value="3/4" checked /> <span>3/4</span></label>
+            <label><input type="checkbox" value="4/4" /> <span>4/4</span></label>
+            <label><input type="checkbox" value="6/8" checked /> <span>6/8</span></label>
+          </div>
+          <p id="meter-selection-status" class="selection-hint" role="status" aria-live="polite">
+            Choose at least two. Changes start a new learning session.
+          </p>
+        </fieldset>
 
         <section id="learn-view" aria-labelledby="page-title">
           <h1 id="page-title"></h1>
@@ -71,14 +76,7 @@
 
           <div class="answer-section">
             <p class="section-label">Choose an answer</p>
-            <div class="answer-grid" role="group" aria-label="Time signature choices">
-              <button class="answer-button" type="button" data-answer-index="0" aria-pressed="false">
-                <strong></strong><span></span>
-              </button>
-              <button class="answer-button" type="button" data-answer-index="1" aria-pressed="false">
-                <strong></strong><span></span>
-              </button>
-            </div>
+            <div id="answer-grid" class="answer-grid" role="group" aria-label="Time signature choices"></div>
             <button id="submit-answer" class="submit-action" type="button" disabled>
               Check answer
             </button>
